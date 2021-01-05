@@ -1,0 +1,2 @@
+classname=Java.JavaReflection.Person
+methodname=staticMethod
