@@ -1,5 +1,7 @@
 package dateStructure.dsPlay.leetcode;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -57,6 +59,23 @@ public class LastStoneWeight {
         return a > b ? Optional.of(a - b) : Optional.of(b - a);
     }
 
+    public int lastStoneWeight(int[] stones) {
+        if (stones.length == 2) {
+            return Math.abs(stones[0] - stones[1]);
+        }
+        if (stones.length == 1) {
+            return stones[0];
+        }
+        Arrays.sort(stones);
+        if (stones[stones.length - 3] == 0) {
+            return stones[stones.length - 1] - stones[stones.length - 2];
+        }
+        stones[stones.length - 1] = stones[stones.length - 1] - stones[stones.length - 2];
+        stones[stones.length - 2] = 0;
+        // 置0 之后，在下一轮排序之后，会将0放到前面，当出现0的时候，就会进入上面的判断条件，从而得到结果
+        return lastStoneWeight(stones);
+    }
+
     public static void main(String[] args) {
         LastStoneWeight weight = new LastStoneWeight();
 //        int[] nums = {2, 7, 4, 1, 8, 1}; // 1
@@ -65,7 +84,7 @@ public class LastStoneWeight {
 //        int[] nums = {3, 7, 2}; // 2
         int[] nums = {10,4,2,10}; // 2
 
-        int res = weight.lastStoneWeight(nums, 0, nums.length - 1);
-        System.out.println(res);
+//        int res = weight.lastStoneWeight(nums, 0, nums.length - 1);
+        System.out.println(weight.lastStoneWeight(nums));
     }
 }
