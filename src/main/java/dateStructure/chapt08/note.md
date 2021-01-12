@@ -12,10 +12,11 @@
 > 所谓归并操作，就是将两个有序子序列合并为一个整体有序的序列
 > 
 
-* 归并(merge)排序
+* [归并(merge)排序](https://blog.csdn.net/jianyuerensheng/article/details/51262984)
 > 归并排序就是分治策略的典型使用
-
 ![sort](./pic/mergeSort.png)
+>
 
 * 快速排序
+
 
