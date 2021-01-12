@@ -29,10 +29,10 @@ public class Graph {
             V = scanner.nextInt();
 
             if (V < 0) throw new RuntimeException("V must bigger than 0");
-            adj = new TreeSet[V];
+            adj = new TreeSet[V]; // 有多少个定点
 
             for (int i = 0; i < V; i++) {
-                adj[i] = new TreeSet();
+                adj[i] = new TreeSet(); // 每个定点的边
             }
 
             E = scanner.nextInt();
