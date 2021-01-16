@@ -1,6 +1,6 @@
 package com.it.leetcode.dsPlay.dsa;
 
-import dateStructure.dsPlay.tree.MaxHeap;
+import dateStructure.dsPlay.dsa.tree.MaxHeap;
 import org.junit.Assert;
 import org.junit.Test;
 

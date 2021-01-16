@@ -1,6 +1,6 @@
 package com.it.leetcode.dsPlay.dsa;
 
-import dateStructure.dsPlay.setAndMap.BSTSet;
+import dateStructure.dsPlay.dsa.setAndMap.BSTSet;
 import org.junit.Assert;
 import org.junit.Test;
 

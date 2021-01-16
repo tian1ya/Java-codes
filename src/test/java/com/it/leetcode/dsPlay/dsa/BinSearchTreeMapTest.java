@@ -1,7 +1,6 @@
 package com.it.leetcode.dsPlay.dsa;
 
-import dateStructure.dsPlay.setAndMap.BinSearchTreeMap;
-import dateStructure.dsPlay.setAndMap.LinkedListMap;
+import dateStructure.dsPlay.dsa.setAndMap.BinSearchTreeMap;
 import org.junit.Assert;
 import org.junit.Test;
 

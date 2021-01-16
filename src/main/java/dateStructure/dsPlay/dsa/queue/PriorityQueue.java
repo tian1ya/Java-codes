@@ -1,6 +1,6 @@
 package dateStructure.dsPlay.dsa.queue;
 
-import dateStructure.dsPlay.tree.MaxHeap;
+import dateStructure.dsPlay.dsa.tree.MaxHeap;
 
 public class PriorityQueue<E extends Comparable<E>> implements Queue<E> {
 
