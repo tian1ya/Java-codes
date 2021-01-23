@@ -1,6 +1,7 @@
 package com.it.leetcode.dsPlay.dsa;
 
-import dateStructure.dsPlay.dsa.tree.AVLTree;
+
+import dateStructure.dsPlay.dsa.tree.leetcode.avlTree.AVLTree;
 
 /**
  * Java 语言: AVL树
