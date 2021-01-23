@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.dsa.tree;
+package dateStructure.dsPlay.dsa.tree.leetcode.avlTree;
 
 /*
     自平衡二叉树
