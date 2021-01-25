@@ -12,6 +12,7 @@ package fpingscala.datastructures
     Cons('1', Cons('2', Nil)) 删除=> 返回 Cons('2', Nil)
     Cons('1', Cons('2', Nil)) 添加=> 返回 Cons(3,Cons('1', Cons('2', Nil)))
 
+  https://github.com/fpinscala/fpinscala/blob/master/answers/src/main/scala/fpinscala/datastructures/List.scala
  */
 sealed trait List[+A]
 
