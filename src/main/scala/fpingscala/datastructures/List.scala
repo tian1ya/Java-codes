@@ -38,6 +38,10 @@ object List {
     case Cons(_, t) => t
   }
 
+  def head[A](ls: List[A]): A = ls match {
+    case Cons(h, _) => h
+  }
+
   def setHead[A](l: List[A], h: A): List[A] = l match {
     case Nil => Cons(h, Nil)
     case Cons(_, t) => Cons(h, t)
@@ -53,8 +57,8 @@ object List {
   }
 
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-    case Cons(h, t) if (f(h)) => dropWhile(t, f)
-    case _ => l
+    case Cons(h, t) => if (f(h)) dropWhile(t, f) else Cons(h, dropWhile(t, f))
+    case Nil => l
   }
 
   // 使用 参数分组，可以更好的完成类型推导，在定义f 作为匿名函数传递的时候，可以不指定类型，
@@ -76,10 +80,17 @@ object List {
     case Cons(h, t) => Cons(h, init(t)) // 尾巴之前的元素全部都做了复制
   }
 
+  /*
+    右到左开始计算，首先按照 f 逻辑，完成初始值和右边第一个元素的计算，然后将计算结果和倒数第2个完成f 的逻辑计算
+      foldRight(List(1,2,3), 0)((a,b) => a + b)
+      f(1, f(2, f(3, 0))) = f(1, f(2, 3)) = f(1, 5) = 6
+ */
+
   def foldRight[A, B](l: List[A], z: B)(f: (A, B) => B): B = l match {
     case Nil => z
     case Cons(h, t) => f(h, foldRight(t, z)(f)) // 这里不是尾递归，在 foldRight 计算完成返回之后还需要进行 f 的函数计算
   }
+
 
   def sumV2(l: List[Int]): Int = foldRight(l, 0)((a, b) => a + b)
 
@@ -120,6 +131,6 @@ object List {
   def addPairwise(a: List[Int], b: List[Int]): List[Int] = (a, b) match {
     case (Nil, _) => Nil
     case (_, Nil) => Nil
-    case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1+h2, addPairwise(t1, t2))
+    case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1 + h2, addPairwise(t1, t2))
   }
 }
