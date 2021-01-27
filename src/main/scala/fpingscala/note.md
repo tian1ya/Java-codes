@@ -115,3 +115,5 @@ Try函数: 是一个通用目的的函数，用于将一个基于异常的API �
     这种情况下使用: Either
     
 Either：子类 Left 和 Right 分别表示错误和正确的返回结果 
+ 
+标准库中的Option 和 Either 是有一些区别的
