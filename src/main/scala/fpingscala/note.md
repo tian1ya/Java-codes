@@ -129,3 +129,30 @@ Either：子类 Left 和 Right 分别表示错误和正确的返回结果
     采用非严格函数就可以完成这样的操作
     
     在scala 中除非明确声明，否则所有的求职都是严格的
+    
+#### Monoid
+    是一类代数操作的描述，满足
+        1. 一个类型 A
+        2. (结合律)一个可结合的二元操作，它接收2个参数然后返回相同类型的值，对于任何 x: A, Y: A, z: A
+           这两个操作的等价的： op(op(x,y), z) == op(x, op(y,z))
+        3. (同一律)一个值， zero: A， 它是一个单位元，对于任何x: A 来说， zero 和它的操作都是等价于 x 本身
+            ： op(z, zero) == x 或者 op(zero, x) == x
+            
+    使用 Scala 表达就是 Monoid
+    
+    所以除了满足 monoid 的法则，什么是Monoid 呢？
+        简单的就是它是一个类型，一些操作和一些法则，一个 monoid 是一个代数结构，没有别的
+        
+    使用monoid 折叠列表， monoid 和列表有紧密的联系，仔细观察其签名
+    
+    def foldRight[B](z: B)(f:(A,B) => B)
+    def foldLeft[B](z: B)(f: (B,A) => B)
+    
+    加入当类型A 和 B 一样的时候
+    def foldRight[B](z: B)(f:(B,B) => B)
+    def foldLeft[B](z: B)(f: (B,B) => B)
+    
+    结合律和并行化
+        右折叠：op(a, op(b, op(c,z)))
+        左折叠：op(op(op(z, a), b), c)
+        平衡折叠：op(op(a,b), op(c,d))
