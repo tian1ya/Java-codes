@@ -161,6 +161,18 @@ object Monoid {
     }
   }
 
+  def productMonoid[A, B](aM: Monoid[A], bM: Monoid[B]): Monoid[(A, B)] = new Monoid[(A, B)] {
+    override def op(a: (A, B), b: (A, B)): (A, B) = (aM.op(a._1, b._1), bM.op(a._2, b._2))
+
+    override def zero: (A, B) = (aM.zero, bM.zero)
+  }
+
+  def functionMonoid[A, B](m: Monoid[B]): Monoid[A => B] = new Monoid[A => B] {
+    override def op(f: A => B, g: A => B): A => B = a => m.op(f(a), g(a))
+
+    override def zero: A => B = a => m.zero
+  }
+
 
 }
 
@@ -168,19 +180,22 @@ object Monoid {
  * 1. 很多数据结构都可以使用 foldLeft/foldMap 等函数折叠，比如 List/Tree/Stream/IndexedSeq 等，将该特性抽象为 Foldable 特质
  * 2. 具体实现时，foldLeft/foldRight 和 foldMap 可以互相实现
  * 3. F[_] 是高阶类型（higher-kinder type），它接受一个类型参数
+ * List[T] => List[List[T]] => List[F[_]] 二阶泛型
  */
 
 trait Foldable[F[_]] {
 
-  def foldRight[A, B](xs: F[A])(z: B)(f: (A, B) ⇒ B): B = foldMap(xs)(f.curried)(Monoid.endoMonoid)(z)
+  import Monoid._
 
-  def foldLeft[A, B](xs: F[A])(z: B)(f: (B, A) ⇒ B): B = foldMap[A, B => B](xs)(a => b => f(b, a))(Monoid.endoMonoid)(z)
+  def foldRight[A, B](as: F[A])(z: B)(f: (A, B) => B): B = foldMap(as)(f.curried)(endoMonoid[B])(z)
 
-  def foldMap[A, B](xs: F[A])(f: A => B)(m: Monoid[B]): B = foldLeft(xs)(m.zero)((b, a) ⇒ m.op(f(a), b))
+  def foldLeft[A, B](as: F[A])(z: B)(f: (B, A) => B): B = foldMap(as)(a => (b: B) => f(b, a))(dual(endoMonoid[B]))(z)
 
-  def concatenate[A](xs: F[A])(m: Monoid[A]): A = foldLeft(xs)(m.zero)((a, b) => m.op(a, b))
+  def foldMap[A, B](as: F[A])(f: A => B)(mb: Monoid[B]): B = foldRight(as)(mb.zero)((a, b) => mb.op(f(a), b))
 
-  def toList[A](fa: F[A]): List[A] = foldRight(fa)(Nil: List[A])((a, b) => a :: b)
+  def concatenate[A](as: F[A])(m: Monoid[A]): A = foldLeft(as)(m.zero)(m.op)
+
+  def toList[A](as: F[A]): List[A] = foldRight(as)(List[A]())(_ :: _)
 }
 
 object ListFoldable extends Foldable[List] {
@@ -188,7 +203,7 @@ object ListFoldable extends Foldable[List] {
 
   override def foldLeft[A, B](xs: List[A])(z: B)(f: (B, A) => B): B = xs.foldLeft(z)(f)
 
-  //  def foldMap[A, B](xs: List[A])(f: (A, B) => B)(m: Monoid[B]): B = xs.foldRight(m.zero)((a, b) => m.op(f(a), b))
+  override def foldMap[A, B](xs: List[A])(f: A => B)(m: Monoid[B]): B = xs.foldRight(m.zero)((a, b) => m.op(f(a), b))
 }
 
 object IndexedSeqFoldable extends Foldable[IndexedSeq] {
@@ -256,5 +271,26 @@ object MonoidHelper extends App {
   println("isSortedFoldRight: " + maybeTupleFoldRightFalse)
   //
   //  println(Monoid.count("hello world ni hao"))
+
+  val reseeee: Int = ListFoldable.foldLeft(List(1, 2, 3, 4))(0)((z, e) => z + e)
+  val reseseee: Int = ListFoldable.foldRight(List(1, 2, 3, 4))(0)((e, z) => z + e)
+
+  private val function: Int => Int = a => a
+  private val resM: Int = ListFoldable.foldMap(List(1, 2, 3, 4))(function)(Monoid.initAddition)
+
+  println(reseeee + " " + reseseee + " " + resM)
+
+  private val productMonoid: Monoid[(Int, Int)] = Monoid.productMonoid(Monoid.initAddition, Monoid.intMultiplication)
+
+  private val tuple: (Int, Int) = productMonoid.op((1, 2), (1, 2))
+  println(tuple)
+
+  private val tuple1: (Int, Int) = List(1, 2, 3, 4).foldRight(productMonoid.zero)((e, z) => (z._1 + e, z._2 * e))
+  println(tuple1)
+
+  private val fMonoid: Monoid[Int => Int] = Monoid.functionMonoid[Int, Int](Monoid.initAddition)
+  private val intToInt: Int => Int = fMonoid.op(a => a * 2, a => a * 3)
+  println(intToInt(10))
+
 
 }
