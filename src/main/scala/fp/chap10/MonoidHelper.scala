@@ -1,9 +1,5 @@
 package fp.chap10
 
-import java.util.concurrent.{ExecutorService, Executors}
-
-import fp.chap07.Par._
-
 
 trait Monoid[A] {
   def op(a: A, b: A): A
@@ -71,13 +67,15 @@ object Monoid {
 
   def lastOptionM[A]: Monoid[Option[A]] = dual(optionMonoid[A])
 
-  def concatenate[A](l: List[A], m: Monoid[A]): A = l.foldRight(m.zero)((a, b) => m.op(a, b))
+  def concatenate[A](l: List[A], m: Monoid[A]): A = l.foldRight(m.zero)((e, z) => m.op(e, z))
 
-  def foldMap[A, B](l: List[A], m: Monoid[B])(f: A => B): B = l.foldRight(m.zero)((a, b) => m.op(f(a), b))
+  def foldMap[A, B](l: List[A], m: Monoid[B])(f: A => B): B = l.foldRight(m.zero)((e, z) => m.op(z, f(e)))
 
-  //  def foldMap2[A, B](l: List[A], m: Monoid[B])(f: A => B):B = (l map f).foldRight(m.zero)((a,b) => m.op(a,b))
   def foldMap2[A, B](l: List[A], m: Monoid[B])(f: A => B): B = l.map(x => f(x)).foldRight(m.zero)((a, b) => m.op(a, b))
 
+  def foldMapV1[A, B](l: IndexedSeq[A], m: Monoid[B])(f: A => B): B = l.foldRight(m.zero)((e, z) => m.op(z, f(e)))
+
+  def foldMap2V[A, B](l: IndexedSeq[A], m: Monoid[B])(f: A => B): B = l.map(x => f(x)).foldRight(m.zero)((a, b) => m.op(a, b))
 
   def foldMapV[A, B](indexedSeq: IndexedSeq[A], m: Monoid[B])(f: A => B): B = {
     if (indexedSeq.size <= 1) {
@@ -89,13 +87,13 @@ object Monoid {
   }
 
 
-  def par[A](m: Monoid[A]): Monoid[Par[A]] = new Monoid[Par[A]] {
-    override def op(a: Par[A], b: Par[A]): Par[A] = map2(a, b)(m.op)
-
-    override def zero: Par[A] = unit(m.zero)
-  }
-
-  def parFoldMap[A, B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): Par[B] = foldMapV(v, par(m))(a => asyncF(f)(a))
+  //  def par[A](m: Monoid[A]): Monoid[Par[A]] = new Monoid[Par[A]] {
+  //    override def op(a: Par[A], b: Par[A]): Par[A] = map2(a, b)(m.op)
+  //
+  //    override def zero: Par[A] = unit(m.zero)
+  //  }
+  //
+  //  def parFoldMap[A, B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): Par[B] = foldMapV(v, par(m))(a => asyncF(f)(a))
 
   /*
     返回当前位置最小值，最大值以及是否排好序的
@@ -112,6 +110,19 @@ object Monoid {
   }
 
   def isSorted(indexedSeq: IndexedSeq[Int]): Option[(Int, Int, Boolean)] = foldMapV(indexedSeq, sortedMonoid)(a => Some(a, a, true))
+
+  var sortedMonoidFoldRight = new Monoid[Option[(Int, Int, Boolean)]] {
+    override def op(e: Option[(Int, Int, Boolean)], z: Option[(Int, Int, Boolean)]): Option[(Int, Int, Boolean)] = (e, z) match {
+      case (Some((e1, e2, e3)), Some((z1, z2, z3))) => Some(z1 max e1, z2 min e2, z3 && e1 <= z1)
+      case (Some((x1, x2, x3)), None) => Some((x1, x2, x3))
+      case (None, Some((x1, x2, x3))) => Some((x1, x2, x3)) // 这两个主要是为  foldRight 只会出现 这里这种case，不会出现第二种的case
+    }
+
+    override def zero: Option[(Int, Int, Boolean)] = None
+  }
+
+  def isSortedFoldRight(indexedSeq: IndexedSeq[Int]): Option[(Int, Int, Boolean)] = foldMap2V(indexedSeq, sortedMonoidFoldRight)(a => Some(a, a, true))
+
 
   /**
    * 以下 ADT（代数数据结构）表示单词计数的部分结果：
@@ -177,7 +188,7 @@ object ListFoldable extends Foldable[List] {
 
   override def foldLeft[A, B](xs: List[A])(z: B)(f: (B, A) => B): B = xs.foldLeft(z)(f)
 
-//  def foldMap[A, B](xs: List[A])(f: (A, B) => B)(m: Monoid[B]): B = xs.foldRight(m.zero)((a, b) => m.op(f(a), b))
+  //  def foldMap[A, B](xs: List[A])(f: (A, B) => B)(m: Monoid[B]): B = xs.foldRight(m.zero)((a, b) => m.op(f(a), b))
 }
 
 object IndexedSeqFoldable extends Foldable[IndexedSeq] {
@@ -203,31 +214,47 @@ object MonoidHelper extends App {
   })
   println(re)
 
-  private val resss: Double = Monoid.foldMap(List(1, 2, 3, 4), new Monoid[Int] {
+  private val reStr: String = Monoid.concatenate(List("1", "2", "3", "4"), new Monoid[String] {
+    override def op(a: String, b: String): String = a + b
+
+    override def zero: String = "0"
+  })
+  println("concatenate: " + reStr)
+
+  val resss: Double = Monoid.foldMap(List(1, 2, 3, 4), new Monoid[Int] {
     override def op(a: Int, b: Int): Int = a + b
 
     override def zero: Int = 0
-  })(a => a * a)
+  })(a => a * 2)
+  println("foldMap: " + resss)
 
-  private val resssds: Double = Monoid.foldMapV(IndexedSeq(1, 2, 3, 4), new Monoid[Int] {
+  val resss2: Double = Monoid.foldMap2(List(1, 2, 3, 4), new Monoid[Int] {
     override def op(a: Int, b: Int): Int = a + b
 
     override def zero: Int = 0
-  })(a => a * a)
+  })(a => a * 2)
+  println("foldMap2: " + resss2)
+  //
+  //  private val resssds: Double = Monoid.foldMapV(IndexedSeq(1, 2, 3, 4), new Monoid[Int] {
+  //    override def op(a: Int, b: Int): Int = a + b
+  //
+  //    override def zero: Int = 0
+  //  })(a => a * a)
+  //
 
-  private val resssdss: Par[Int] = Monoid.parFoldMap(IndexedSeq(1, 2, 3, 4), new Monoid[Int] {
-    override def op(a: Int, b: Int): Int = a + b
+  //
+  val maybeTupleTrue: Option[(Int, Int, Boolean)] = Monoid.isSorted(IndexedSeq(1, 2, 3, 4, 9, 14))
+  println("isSorted: " + maybeTupleTrue)
 
-    override def zero: Int = 0
-  })(a => a * a)
+  val maybeTupleFalse: Option[(Int, Int, Boolean)] = Monoid.isSorted(IndexedSeq(1, 2, 90, 4, 9, 14))
+  println("isSorted: " + maybeTupleFalse)
 
-  private val service: ExecutorService = Executors.newSingleThreadExecutor()
-  println(resssdss(service).get())
-  service.shutdown()
+  val maybeTupleFoldRightTrue: Option[(Int, Int, Boolean)] = Monoid.isSortedFoldRight(IndexedSeq(1, 2, 3, 4, 9, 14))
+  println("isSortedFoldRight: " + maybeTupleFoldRightTrue)
 
-  private val maybeTuple: Option[(Int, Int, Boolean)] = Monoid.isSorted(IndexedSeq(1, 2, 3, 4, 2, 9, 4))
-  println(maybeTuple)
-
-  println(Monoid.count("hello world ni hao"))
+  val maybeTupleFoldRightFalse: Option[(Int, Int, Boolean)] = Monoid.isSortedFoldRight(IndexedSeq(1, 2, 90, 4, 9, 14))
+  println("isSortedFoldRight: " + maybeTupleFoldRightFalse)
+  //
+  //  println(Monoid.count("hello world ni hao"))
 
 }

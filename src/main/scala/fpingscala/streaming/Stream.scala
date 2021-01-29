@@ -3,10 +3,10 @@ package fpingscala.streaming
 import fpingscala.streaming.Stream._
 
 sealed trait Stream[+A] {
-  def headOption[A]: Option[A] = this match {
-    case Cons(h, _) => Some(h())
-    case Empty => None
-  }
+//  def headOption[A]: Option[A] = this match {
+//    case Cons(h, _) => Some(h())
+//    case Empty => None
+//  }
 
   def toList: List[A] = {
 
