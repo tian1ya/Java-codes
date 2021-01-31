@@ -172,7 +172,8 @@ Either：子类 Left 和 Right 分别表示错误和正确的返回结果
     Monad: 
         Monad是一种定义将函数(函子)组合起来的结构方式，且这些组合的方法都是符合结合律的。
     
-    那么函子是什么呢 ？
-        
+    那么函子是什么呢 ？ 
+        /Users/xuxliu/Ifoods/Java/leetcode/src/main/scala/fp/chapt11
+    有一些注释，出了知道满足那几个定理，以及类型公共方法算子的抽象组合，也没大明白什么是Monad
         
     
