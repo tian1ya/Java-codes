@@ -137,7 +137,7 @@ Either：子类 Left 和 Right 分别表示错误和正确的返回结果
     
     非严格求值，理解起来就是将一个数写成，表达式，运行这个表达式获得表达式的返回值，才是得到这个值
     
-#### Monoid
+#### 第10章：Monoid
     是一类代数操作的描述，满足
         1. 一个类型 A
         2. (结合律:associative laws)一个可结合的二元操作，它接收2个参数然后返回相同类型的值，对于任何 x: A, Y: A, z: A
@@ -168,7 +168,7 @@ Either：子类 Left 和 Right 分别表示错误和正确的返回结果
          F[_] 是高阶类型（higher-kinder type），它接受一个类型参数
          List[T] => List[List[T]] => List[F[_]] 二阶泛型(F[_] List[T]) 的泛型
         
-#### Monad
+#### 第11章：Monad
     Monad: 
         Monad是一种定义将函数(函子)组合起来的结构方式，且这些组合的方法都是符合结合律的。
     
@@ -176,4 +176,6 @@ Either：子类 Left 和 Right 分别表示错误和正确的返回结果
         /Users/xuxliu/Ifoods/Java/leetcode/src/main/scala/fp/chapt11
     有一些注释，出了知道满足那几个定理，以及类型公共方法算子的抽象组合，也没大明白什么是Monad
         
+### 第12章：可应用函子/可遍历函子
+    
     
