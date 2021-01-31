@@ -7,6 +7,8 @@ package fp.chapt11
     关系单独的数据类型中寻找并定义最小的一个原始的操作集合，在这个之上通过组合定义更多可用的操作
     如我们定义了 unit 和 flatMap 为最小操作单元
 
+     Monad 抽取出了重复的代码，不是对一个类型的泛化，而是大量的不同的数据类型满足Monad 接口和法则的抽象
+     允许一劳永逸的堆很多看起来没有共性的类型编写多个组合子.
 
  */
 trait Functor[F[_]] {
@@ -32,7 +34,25 @@ trait Monad[F[_]] extends Functor[F] {
   def sequence[A](lma: List[F[A]]): F[List[A]] = lma.foldRight(unit(List[A]()))((e, z) => map2(e, z)(_ :: _))
 
   def traverse[A, B](la: List[A])(f: A => F[B]): F[List[B]] = la.foldRight(unit(List[B]()))((e, z) => map2(f(e), z)(_ :: _))
+
+  def replicateM[A](n:Int, ma: F[A]): F[List[A]] = sequence(List.fill(n)(ma))
+
+  // 结合律
+  def compose[A,B,C](f: A => F[B], g: B => F[C]) : A => F[C] = a => flatMap(f(a))(g)
+
+  def join[A](mma: F[F[A]]): F[A] = flatMap(mma)(ma => ma)
 }
+
+/*
+    这里使用Id 类型作为包装，然后在对 value 做完处理之后，对其进行包装为 Id 类型，可以说 monad 提供了一个引入和绑定变量的上下文
+    同时执行了变量替换
+ */
+case class Id[A](value: A) {
+  def map[B](f: A => B):Id[B] = Id(f(value))
+
+  def flatMap[B](f: A => Id[B]): Id[B] = f(value)
+}
+
 
 object MonadHelper extends App {
 
@@ -67,5 +87,31 @@ object MonadHelper extends App {
     override def flatMap[A, B](ma: List[A])(f: A => List[B]): List[B] = ma flatMap f
   }
 
+  private val list: List[Int] = listMonad.unit(1)
+  println(list.mkString(","))
+
+  private val list1: List[Int] = listMonad.flatMap(List[List[Int]](List(1,2,3), List(4,5,6)))(a => a.map(a => a*2))
+  println(list1.mkString(","))
+
+  private val list2: List[String] = listMonad.map2[Int, String, String](List[Int](1,2,3,4), List[String]("1","2","3"))((e1, e2) => e1.toString + "->" + e2)
+  println(list2.mkString(","))
+
+  private val option: Option[List[Int]] = optionalMonad.sequence(List(Some(1), Some(2), Some(3)))
+  println(option.mkString(","))
+
+  private val option1: Option[List[Int]] = optionalMonad.replicateM(2, Some(2))
+  println(option1.mkString(","))
+
+  private val functionaa: Int => List[Int] = listMonad.compose[Int, Int, Int](a => List(a + 1), a => List(a*3))
+  println(functionaa(2).mkString(","))
+
+  private val list3: List[Int] = listMonad.join(List(List(1,2,3), List(4,5,6)))
+  println(list3.mkString(","))
+
+  private val value: Id[String] = Id("Hello, ") flatMap(a => Id("Monad!").flatMap(b => (Id(a + b))))
+  println(value.value)
+
+  private val value1: Id[String] = for {a <- Id("Hello, "); b <- Id("Monad!")} yield a + b
+  println(value1.value)
 
 }
