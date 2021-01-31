@@ -10,6 +10,18 @@
 >   函数式编程是一种过程抽象的思维，就是对当前的动作去进行抽象，关注的是动作。
 >   面对对象（OOP）可以理解为是对数据的抽象，比如把一个人抽象成一个Object，关注的是数据。 
 >   函数式编程是一种过程抽象的思维，就是对当前的动作去进行抽象，关注的是动作。
+>
+> 经过了一段时间的泛函编程讨论，始终没能实实在在的明确到底泛函编程有什么区别和特点；我是指在现实编程的情况下所谓的泛函编程到底如何特别。我们已经习惯了传统的行令式编程（imperative programming），
+> 总是先入为主的认为软件编程就是一行接着一行的更改某些变量状态指令：明刀明枪，字里行间目的和方式都很明确。我们就以一步步更改程序状态的方式，一行一行的拼凑指令：这就是典型的行令式编程了。
+ 
+> 泛函编程，顾名思义，就是用一个个函数来编程。讲的再深入点就是通过函数组合来更改程序状态。什么意思？为什么？
+
+> 严格来讲，在泛函编程中是没有在某个地方申明一个变量，然后在一些函数里更新这个变量这种方式的。与申明变量相对应的是泛函编程会把所谓变量嵌入在一个结构里，如：F[A]。F是某种高阶类型，A就是那个变量。如果我们需要去更改这个变量A就必须设计一套专门的函数来做这件事了。
+> 从某些方面这也解释了何谓泛函编程。我用粗俗的语言来描述这两种编程模式的区别：行令编程就像在床面上打扑克，而泛函编程就好比在被窝里打牌。两种操作一样都是打牌，只是打牌的环境不同。实际上泛函编程的这种在套子内部更新变量的方式恰恰是我们选择泛函模式的考虑重点：
+> 它可以使程序运行更安全稳定、能轻松解决很多行令编程模式中存在的难题，这些优点将会在将来的应用中逐渐显现出来。
+> 既然变量封装在了套子里面，那么自然需要设计一些在套子里更新变量的函数了：
+> 我们的目的是用某些函数把F[A]变成F[B]：A 变成了 B，但任然封装在 F[] 里：
+>[以上一段是来源于这篇博客](https://www.cnblogs.com/tiger-xc/p/4546702.html)
 ---
 ### 第一章
 #### 什么是函数式编程
@@ -139,7 +151,7 @@ Either：子类 Left 和 Right 分别表示错误和正确的返回结果
     
 #### 第10章：Monoid
     是一类代数操作的描述，满足
-        1. 一个类型 A
+        1. 一个抽象类型 A
         2. (结合律:associative laws)一个可结合的二元操作，它接收2个参数然后返回相同类型的值，对于任何 x: A, Y: A, z: A
            这两个操作的等价的： op(op(x,y), z) == op(x, op(y,z))
         3. (同一律)一个值， zero: A， 它是一个单位元，对于任何x: A 来说， zero 和它的操作都是等价于 x 本身
@@ -163,10 +175,15 @@ Either：子类 Left 和 Right 分别表示错误和正确的返回结果
         右折叠：op(a, op(b, op(c,z)))
         左折叠：op(op(op(z, a), b), c)
         平衡折叠：op(op(a,b), op(c,d))
+    也就是晚上上面的动作得到的结果是等同的
         
     类型构造器：
          F[_] 是高阶类型（higher-kinder type），它接受一个类型参数
          List[T] => List[List[T]] => List[F[_]] 二阶泛型(F[_] List[T]) 的泛型
+         
+    实际上Monoid就是List[A] => A的抽象模型
+    所有数据类型的Monoid实例都共同拥有一套Monoid特有的操作及遵循一套Monoid行为定律。这样我们可以把Monoid视为一个抽象数据模型，
+    在泛函算法中使用特殊的Monoid实例就可以达到预期的效果而不需要修改算法
         
 #### 第11章：Monad
     Monad: 
@@ -175,12 +192,86 @@ Either：子类 Left 和 Right 分别表示错误和正确的返回结果
     那么函子是什么呢 ？ 
         /Users/xuxliu/Ifoods/Java/leetcode/src/main/scala/fp/chapt11
     有一些注释，出了知道满足那几个定理，以及类型公共方法算子的抽象组合，也没大明白什么是Monad
-        
-### 第12章：可应用函子/可遍历函子
-    功能没有 monad 那么强大，但是且使用更加广泛
-    monad 使用 unit 和 flatMap 最为最基本的操作(原语)，然后衍生出各种的操作
-    而这里抽象出另外一个：那就是可应用函子
-        它使用 unit 和 map2 最为原语
     
+```scala
+trait Functor[F[_]] {
+  def map[A, B](fa: F[A])(f: A => B): F[B]
+}
+```
+    Functor 可以和一阶泛型中的 function 对应起来理解，只不过Functor 是在二阶上的映射
+     是套在一个圈子里面的(这里的圈子就是说二阶泛型F)
+     一样的是他也是有一个map 函数的，如上面的 trait 定义的，map 完成 F[A] => F[B] 的映射，在一个封闭的高阶类型上下文中完成操作
+    
+    抽象出这些感念的意图就是，针对这些数据类型的特性，设计最基本的操作函数或者组件，而使用 unit 和 flatMap
+    可以实现各种各样的操作，包括map(unit + flatMap 更加的抽象,也就是更加的概括)
+    Monad 就是使用 unit + flatMap 最为最基本的组件
+```scala
+trait Monad[F[_]] extends Functor[F] {
+  def unit[A](a: => A): F[A]
+  def flatMap[A, B](ma: F[A])(f: A => F[B]): F[B]
+}
+```
+    我们似乎可以这么说最为 map 为原语(最基本操作)的trait 就是一个 functor
+    而以 unit + flatMap 为原语的 trait 就是一个 Monad
+    
+    也 提到过 functor 是在一个二阶环境中进行的操作，也就是 F[A] => F[B] 都是在F 这个上下文中进行的映射
+    而Monad 就比较强大的多了，因为flatMap 的存在可以在不同的上下文中进行映射，如flatMap 中的函数 f:A=>F[B]
+    
+    但是 flatMap + unit 并不是Monad 唯一的最基本的组件函数，还有 compose+unit及join+map+unit这两组Monad最基本组件函数，因为我们可以用这些组件相互实现：
+    所以，我们可以通过直接对数据类型实现join+map+unit或compose+unit来产生Monad实例。
+    
+    Monad 是一个超级概括的数据类型，必须兼容各种设计模式，无法专注对一些特殊的操作模式，
+    在泛函编程模式中最具有特点的就是在一个封闭的结构内运行函数，比较明显的就是map2这个函数了
+```scala
+def map2[A,B,C](ma: M[A], mb: M[B])(f: (A,B) => C): M[C]
+```
+    map2在2个封闭的高阶类型结构中的元素通过运行f 函数结合起来，完成操作之后产生的结果仍然保持结构的完整性，这种典型的泛函编程函数
+    施用模式
+    
+    于是将这种在2个高阶类型结构中通过施用f函数，并产生的结果仍然保持结构的完整性这种模式独立出来称为 Applicative
+    
+### 第12章：可应用函子/可遍历函子
+    当然 map2 + unit 并不是 Monad 的原语，因为他们两个无法实现 flatMao、join 等
+    但是 flatMap 可以来实现 map2 以及后面的 apply ，所以 Monad 就是 Applicative
+    
+    查看三者 map、flatMap、map2 三者的函数签名
+```scala
+def map[A,B]      (ma: M[A])(f: A => B)              : M[B]
+def map2[A,B,C]   (ma: M[A], mb: M[B])(f: (A,B) => C): M[C]
+def flatMap[A,B]  (ma: M[A])(f: A => M[B])           : M[B]
+```
+    其中 map 和 flatMap 都是正宗的在高阶数据类型结构内的函数施用，但是 flatMap 的函数是 A => M[B]
+    会破坏结果的结构，
+    
+    而我们定义 Applicative 专注的是函数的施用
+```scala
+def apply[A,B](fab: F[A => B])(fa: F[A]): F[B]
+```
+    上面的函数签名可以发现，apply 施用函数是通过一个Monaic 穿进去的，这就是的 apply 比map 更加强大
+    
+    244 行提到 flatMap 会破坏结果，那么看哈三者的实现，就知道怎么回事了
+```scala
+def Map2[A,B,C](ma: Option[A], mb: Option[B])(f: (A,B) => C): Option[C] = {
+      (ma,mb) match {
+          case (Some(a),Some(b)) => Some(f(a,b))
+          case _ => None
+      }
+  }
+def apply[A,B](ma: Option[A])(f: Option[A => B]): Option[B] = {
+      (ma,f) match {
+          case (Some(a),Some(f)) => Some(f(a))
+          case _ => None
+      }
+}
+def flatMap[A,B](ma: Option[A])(f: A => Option[B]): Option[B] = {
+      ma match {
+          case Some(a) => f(a)
+          case _ => None
+      }
+}
+```
+    apply 和 Map2 返回的还均是在一个 高阶函数(Some)中, 但是 flatMap 且不一定，其取决于 f(a) 的定义，所以会破坏
+    
+    applicative 比较与 Monad 会弱一点，这也就给了它更多的灵活性
     
     
