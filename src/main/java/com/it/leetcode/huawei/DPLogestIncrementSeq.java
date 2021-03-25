@@ -21,7 +21,7 @@ public class DPLogestIncrementSeq {
      */
 
     // 答案在这里
-//    public static void main(String[] args) {
+//    public static void thread.book.main(String[] args) {
 //        int[] arr = new int[]{10, 22, 9, 33, 21, 50, 41, 60, 80};
 //        int[] x = longestSubStringLen(arr);
 //        System.out.println(x);
@@ -88,74 +88,124 @@ public class DPLogestIncrementSeq {
 
     //自己联系
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//
 //        while (scanner.hasNextInt()) {
 //            int count = scanner.nextInt();
 //            int[] seq = new int[count];
-//            for(int i=0;i<count;i++) {
+//            for (int i = 0; i < count; i++) {
 //                seq[i] = scanner.nextInt();
 //            }
-
-            int[] seq = new int[]{10, 22, 9, 33, 21, 50, 41, 60, 80};
-            // result => 1,2,1,3,2,4,4,5,6
-            int[] result = findSortIndex(seq);
-
-            int res = 0;
-            for (int i = 0; i < result.length; i++) {
-                if (result[i] > res)
-                    res = result[i];
-            }
-            System.out.println(res);
-
-            findLIS(seq, result);
+//
+////            int[] seq = new int[]{10, 22, 9, 33, 21, 50, 41, 60, 80};
+//            // result => 1,2,1,3,2,4,4,5,6
+//            int[] result = findSortIndex(seq);
+//
+//            int res = 0;
+//            for (int i = 0; i < result.length; i++) {
+//                if (result[i] > res)
+//                    res = result[i];
+//            }
+//            System.out.println(res);
+//
+//            findLIS(seq, result);
+////        }
 //        }
+//    }
+//
+//    public static int[] findSortIndex(int[] seq) {
+//        int length = seq.length;
+//        int[] stepsSeq = new int[length];
+//        for (int i = 0; i < length; i++) {
+//            stepsSeq[i] = 1;
+//            for (int j = 0; j < i; j++) {
+//                if (seq[j] < seq[i]) {
+////                    dp[i]={max(dp[j])+1,j<i且a[j]<a[i]},
+//                    stepsSeq[i] = Math.max(stepsSeq[i], stepsSeq[j] + 1);
+//                }
+//            }
+//        }
+//        return stepsSeq;
+//    }
+//
+//    public static void findLIS(int[] seq, int[] dp) {
+//
+//        int biggestValue = 0;
+//
+//        for (int i : dp) {
+//            if (i > biggestValue)
+//                biggestValue = i;
+//        }
+//
+//        int[] result = new int[biggestValue];
+//        int index = 0;
+//        for (int i = biggestValue; i > 0; i--) {
+//            int indexOfSeq = indexOf(dp, i);
+//            result[index] = seq[indexOfSeq];
+//            index += 1;
+//        }
+//
+//        for (int i = result.length; i > 0; i--) {
+//            System.out.print(result[i - 1] + " ");
+//        }
+//    }
+//
+//    public static int indexOf(int[] seq, int value) {
+//        int index = 0;
+//        for (int i = 0; i < seq.length; i++) {
+//            if (seq[i] == value)
+//                break;
+//            index += 1;
+//        }
+//        return index;
+//    }
+
+
+    public static void main(String[] args) {
+//        Scanner sc = new Scanner(System.in);
+//        while(sc.hasNextLine()){
+//            int n = Integer.parseInt(sc.nextLine());
+//            String str = sc.nextLine();
+//            System.out.println(removeNo(str,n));
+//        }
+        int i = removeNo(9);
+        System.out.println(i);
     }
 
-    public static int[] findSortIndex(int[] seq) {
-        int length = seq.length;
-        int[] stepsSeq = new int[length];
-        for (int i = 0; i < length; i++) {
-            stepsSeq[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (seq[j] < seq[i]) {
-                    stepsSeq[i] = Math.max(stepsSeq[i], stepsSeq[j] + 1);
+    public static int removeNo(int n){
+        String[] stra =  new String[]{"10", "22", "9", "33", "21", "50", "41", "60", "80"};
+        int[] height = new int[n];//分别为正序和逆序的整型数组
+        int[] heightopp = new int[n];
+        for(int i=0;i<n;i++){
+            height[i] = Integer.parseInt(stra[i]);
+        }
+        for(int i=0;i<n;i++){
+            heightopp[i] = height[n-i-1];
+        }
+        int[] dp = Maxsub(height,n);//递增计数
+        int[] dpopp = Maxsub(heightopp,n);//递减计数（逆序）
+        int[] sum = new int[n];
+        for(int i=0;i<n;i++){
+            sum[i] = dp[i]+dpopp[n-i-1];//相加时要将递减计数倒过来
+        }
+        int max = 0;//求递增计数与递减计数之和的最大值
+        for(int i=0;i<n;i++){
+            max = sum[i]>max?sum[i]:max;
+        }
+        return n-(max-1);//返回出列人数
+    }
+
+    public static int[] Maxsub(int[] stra,int n){//按公式dp[i]={max(dp[j])+1,j<i且a[j]<a[i]}求dp[i]
+        int[] dp = new int[n];
+        for (int i=0;i<n;i++){
+            dp[i] = 1;
+            for (int j=0;j<i;j++) {
+                if (stra[j]<stra[i]) {
+                    dp[i] = Math.max(dp[i], dp[j]+1);
                 }
             }
         }
-        return stepsSeq;
-    }
-
-    public static void findLIS(int[] seq, int[] dp) {
-
-        int biggestValue = 0;
-
-        for (int i : dp) {
-            if (i > biggestValue)
-                biggestValue = i;
-        }
-
-        int[] result = new int[biggestValue];
-        int index = 0;
-        for (int i = biggestValue; i > 0; i--) {
-            int indexOfSeq = indexOf(dp, i);
-            result[index] = seq[indexOfSeq];
-            index += 1;
-        }
-
-        for (int i = result.length; i > 0; i--) {
-            System.out.print(result[i-1] + " ");
-        }
-    }
-
-    public static int indexOf(int[] seq, int value) {
-        int index = 0;
-        for (int i = 0; i < seq.length; i++) {
-            if (seq[i] == value)
-                break;
-            index += 1;
-        }
-        return index;
+        return dp;
     }
 }

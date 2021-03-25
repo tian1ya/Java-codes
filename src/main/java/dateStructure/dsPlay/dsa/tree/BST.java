@@ -240,9 +240,6 @@ public class BST<E extends Comparable<E>> {
             删除叶子节点，比较简单，都不需要特殊的情况去对待处理
             删除左右都有孩子节点 d，需要找到d 的后继节点s，s = min(d -> right)
             删除d 的右子树最小值(s)，然后将最小值(s)作为d 的替换。
-
-
-
      */
     public void remove(E e) {
         root = remove(root, e);
@@ -272,7 +269,8 @@ public class BST<E extends Comparable<E>> {
             } else {
                 // 右节点最小节点
                 Node successor = getMin(node.right);
-                successor.right = removeMin(node.right); // 删除并返回 root, 这里进行了 size--, 这类并不需要在进行 size--了。
+                successor.right = removeMin(node.right);
+                // 删除并返回 root, 这里进行了 size--, 这类并不需要在进行 size--了。
                 successor.left = node.left;
 
                 node.left = node.right = null;

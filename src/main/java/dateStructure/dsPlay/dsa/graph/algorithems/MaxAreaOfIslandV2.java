@@ -3,7 +3,7 @@ package dateStructure.dsPlay.dsa.graph.algorithems;
 /*
     这就是floodfill 算法
 
-    相关的问题还有： leecode 200/1020/130/733/1034 等个问题
+    相关的问题还有： leetcode 200/1020/130/733/1034 等个问题
 
     尝试使用 BFS 解决
  */

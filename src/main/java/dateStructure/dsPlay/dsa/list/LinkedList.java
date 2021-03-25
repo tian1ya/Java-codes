@@ -81,11 +81,10 @@ public class LinkedList<E> {
 
         Node prev = dummyHead;
         for (int i = 0; i < index; i++)
-            prev = prev.next;// 找到前一个节点
+            prev = prev.next;// 找到最后一个节点
 
         prev.next = new Node(e, prev.next);
         size++;
-
     }
 
     public void addFirst(E e) {

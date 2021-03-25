@@ -32,7 +32,7 @@
 //
 //object notUseException {
 //
-//  def main(args: Array[String]): Unit = {
+//  def thread.book.main(args: Array[String]): Unit = {
 //    val ints = List(1.0, 2.0, 3.0, 4.0)
 //    val value = variance(ints)
 //    val res = value.getOrElse(2.0)

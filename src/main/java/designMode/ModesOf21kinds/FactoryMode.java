@@ -143,7 +143,7 @@
 //
 //public class FactoryMode {
 //
-//    public static void main(String[] args) {
+//    public static void thread.book.main(String[] args) {
 ////        HumanFactory humanFactory = new HumanFactory();
 //        BlackHuman blackHuman = HumanFactoryV1.createHuman(BlackHuman.class);
 //

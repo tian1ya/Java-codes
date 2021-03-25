@@ -50,7 +50,7 @@ package dateStructure;
 import java.util.*;
 
 public class JavaCllectionF {
-    public static void main(String[] args) {
+    public static void thread.book.main(String[] args) {
          List<Integer> array = new ArrayList<Integer>();
          List<Integer> linked = new LinkedList<Integer>();
 

@@ -23,7 +23,7 @@ public class AdjTable {
     }
 
     public AdjTable(String fileName) {
-        String path = "/Users/xuxliu/Ifoods/Java/leetcode/src/main/java/dateStructure/graph/files/" + fileName;
+        String path = "/Users/xuxliu/Ifoods/Java/leetcode/src/thread.book.main/java/dateStructure/graph/files/" + fileName;
         File file = new File(path);
 
         try (Scanner scanner = new Scanner(file);) {
@@ -105,5 +105,4 @@ public class AdjTable {
         System.out.println(adjMatrix.degree(2));
 
     }
-
 }

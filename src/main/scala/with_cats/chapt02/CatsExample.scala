@@ -4,6 +4,9 @@ import cats.Monoid
 import cats.instances.int._
 import cats.instances.option._
 import cats.instances.string._
+import cats.instances.map._
+import cats.instances.tuple._
+
 import cats.syntax.semigroup._
 
 case class Order(totalCost: Double, quantity: Double)
@@ -44,7 +47,7 @@ object CatsExample extends App {
 
   println(Monoid[String].combine("a", "b"))
   private val value: Monoid[String] = Monoid.apply[String]
-  value.combine("A", "b")
+  println(value.combine("A", "b"))
 
   private val maybeInt = Option(12)
   private val maybeInt1 = Option(34)
@@ -57,5 +60,15 @@ object CatsExample extends App {
   println(str)
   println(i)
 
+  private val map: Map[String, Int] = Map("a" -> 1, "b" -> 2)
+  private val map2: Map[String, Int] = Map("b" -> 3, "d" -> 4)
+
+  private val stringToInt: Map[String, Int] = map |+| map2
+  println(stringToInt)
+
+
+  private val tuple: (String, Int) = ("hello", 12)
+  private val tuple2: (String, Int) = ("word", 22)
+  println(tuple |+| tuple2)
 
 }

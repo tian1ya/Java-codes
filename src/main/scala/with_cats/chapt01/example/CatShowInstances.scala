@@ -12,4 +12,7 @@ object CatShowInstances extends App {
 
   implicit val catShow: Show[Cat]= Show[Cat] { cat =>
     s"show ${cat.name.show} is a ${cat.age.show} year-old ${cat.color.show} cat." }
+
+  private val cat = Cat("1", 12, "blue")
+  println(cat.show)
 }

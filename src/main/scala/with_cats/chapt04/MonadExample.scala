@@ -38,9 +38,21 @@ object MonadExample extends App {
 
   // 但是不能直接使用一阶泛型
   // println(sumSquare(3,4))
-  // 如果可以将一阶泛型和二阶泛型都可以使用， 使用Monoid 的Id Syntax
+  // 如果可以将一阶泛型和高阶泛型都可以使用， 使用Monoid 的Id Syntax
   import cats.Id
   println(sumSquare(3:Id[Int],4:Id[Int]))
+
+  private val value2: Id[String] = "Dave" : Id[String]
+  println(value2)
+  // res3: cats.Id[String] = Dave
+  private val value3: Id[Int] = 123 : Id[Int]
+  println(value3)
+
+  // res4: cats.Id[Int] = 123
+  private val value4: Id[List[Int]] = List(1, 2, 3) : Id[List[Int]]
+  // res5: cats.Id[List[Int]] = List(1, 2, 3)
+  println(value4)
+
 
   // 实现Id 的 pure、map、flatMap 方法
   def pure[A](value: A): Id[A] = value
@@ -50,6 +62,7 @@ object MonadExample extends App {
 
   import cats.syntax.either._
   private val value: Either[String, Int] = 3.asRight[String]
+  private val right: Either[Nothing, List[Int]] = List(12).asRight
   // Either[A, B] 有2个类型参数，第一个参数是Left 的类型，第二个是Right 的类型
   // asRight 实现在 implicit class final class EitherIdOps[A](private val obj: A) 中，所以
   // 都具备了这个函数能力
@@ -59,9 +72,10 @@ object MonadExample extends App {
 
 //  private val value2: Right[String, Int] = Right(0)
 
-  def countPositive(nums: List[Int]): Either[String, Int] = nums.foldRight(0.asRight[String])((e, z) => z.map(z => z + 1) )
-  //  def countPositive(nums: List[Int]) = nums.foldRight(Right(0))((e, z) => z.map(z => z + 1) )
-  // 这里编译失败
+  def countPositive(nums: List[Int]): Either[String, Int] =
+    nums.foldRight(0.asRight[String])((e, z) => z.map(z => z + 1) )
+//    def countPositive(nums: List[Int]) = nums.foldRight(Right(0))((e, z) => z.map(z => z + 1) )
+  // 这里编译失败， 是因为 Right(0) 返回的是 Right， 而不是 Either， 而编译器认 Either
 
   val x = {
     println("Computation X")

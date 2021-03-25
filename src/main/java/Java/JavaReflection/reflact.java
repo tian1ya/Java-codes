@@ -282,7 +282,7 @@
 //    //动态加载类名和方法
 //    public static void demo10() throws IOException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
 //        Properties properties = new Properties();
-//        properties.load(new FileReader("/Users/xuxliu/Ifoods/Java/leetcode/src/main/java/Java/JavaReflection/class.txt"));
+//        properties.load(new FileReader("/Users/xuxliu/Ifoods/Java/leetcode/src/thread.book.main/java/Java/JavaReflection/class.txt"));
 //
 //        // 文件里面写的是谁，那么久动态加载谁,修改读取文件中的配置，就可以直接调用对应的方法，对象
 //        String classname = properties.getProperty("classname");
@@ -311,7 +311,7 @@
 //    }
 //
 //
-//    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, IOException {
+//    public static void thread.book.main(String[] args) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, IOException {
 //        demo8();
 //
 //    }

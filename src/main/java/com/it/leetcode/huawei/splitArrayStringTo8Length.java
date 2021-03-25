@@ -53,7 +53,7 @@ public class splitArrayStringTo8Length {
 import java.util.Scanner;
 import java.util.LinkedList;
 public class Main{
-    public static void main(String[] args){
+    public static void thread.book.main(String[] args){
         Scanner sc = new Scanner(System.in);
         while(sc.hasNext()){
             int n = Integer.valueOf(sc.nextLine());

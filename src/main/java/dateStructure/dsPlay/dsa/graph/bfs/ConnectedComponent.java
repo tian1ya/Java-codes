@@ -48,6 +48,7 @@ public class ConnectedComponent {
             res[i] = new ArrayList();
 
         for (int j = 0; j < G.V(); j++)
+            // visited 值一样的是属于同一个联通分量的
             res[this.visited[j]].add(j);
 
         return res;

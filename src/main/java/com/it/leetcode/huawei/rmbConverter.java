@@ -23,7 +23,7 @@ public class rmbConverter {
 //    private static final int _7MB = 1024 * 1024 * 7;
 //    private static final int _8MB = 1024 * 1024 * 8;
 //
-//    public static void main(String[] args) throws IOException {
+//    public static void thread.book.main(String[] args) throws IOException {
 //        ArrayList<byte[]> list = new ArrayList<>();
 //        list.add(new byte[_8MB]);
 //        list.add(new byte[_8MB]);
