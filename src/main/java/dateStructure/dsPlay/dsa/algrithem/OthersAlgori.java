@@ -1,9 +1,6 @@
 package dateStructure.dsPlay.dsa.algrithem;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 /*
     ASCII
@@ -45,17 +42,52 @@ public class OthersAlgori {
 //        System.out.println(longestPalindromeDP("abb"));
 //        System.out.println(longestPalindromeDP("aacabdkacaa"));
 
-        ListNode listNode1 = new ListNode(2, new ListNode(4, new ListNode(3)));
-        ListNode listNode2 = new ListNode(5, new ListNode(6, new ListNode(4)));
+//        ListNode listNode1 = new ListNode(2, new ListNode(4, new ListNode(3)));
+//        ListNode listNode2 = new ListNode(5, new ListNode(6, new ListNode(4)));
+//
+//        ListNode listNode = addTwoNumbers(listNode1, listNode2);
+//        System.out.println("Aa");
 
-        ListNode listNode = addTwoNumbers(listNode1, listNode2);
-        System.out.println("Aa");
+//        System.out.println(convert("PAYPALISHIRING", 3));
+        System.out.println(convert("AB", 1));
+    }
+
+    public static String convert(String s, int numRows) {
+        if (s.length() <= numRows) return s;
+        if (numRows == 1) return s;
+
+
+        ArrayList<StringBuffer> list = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            list.add(new StringBuffer());
+        }
+
+        char[] chars = s.toCharArray();
+        boolean flag = true;
+        int index = 0;
+
+        for (int i = 0; i < chars.length; i++) {
+
+            list.get(index).append(chars[i]);
+            index = flag ? index + 1 : index - 1;
+            if (index == numRows-1 || index == 0)
+                flag = !flag;
+        }
+
+        StringBuffer sb = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            sb.append(list.get(i).toString());
+        }
+
+        return sb.toString();
     }
 
     static class ListNode {
         int val;
         ListNode next;
-        ListNode() { }
+
+        ListNode() {
+        }
 
         ListNode(int val) {
             this.val = val;
@@ -80,7 +112,7 @@ public class OthersAlgori {
             cur.next = new ListNode(tempSum1);
             cur = cur.next;
 
-            carry = (tempSum+ carry) / 10;
+            carry = (tempSum + carry) / 10;
 
             l1 = l1 != null ? l1.next : null;
             l2 = l2 != null ? l2.next : null;
