@@ -1,11 +1,12 @@
 package kafka.consumer;
 
-import fp.chap03.Cons;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -98,19 +99,15 @@ public class consumer1 {
             重启consumer，然后就能拿到历史所有数据了
          */
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
-
-
-
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
 
         consumer.subscribe(Collections.singletonList("first"));
 
-
-
         while (true) {
-            // 拉去数据，给一个时间，在这段时间内拉取不到数据就停止轮询, 批量拉取
-            ConsumerRecords<String, String> result = consumer.poll(100);
+            // 拉数据，给一个时间，在这段时间内拉取不到数据就停止轮询, 批量拉取
+            ConsumerRecords<String, String> result = consumer.poll(Duration.ofMillis(1000));
 
+            consumer.assign(Arrays.asList(new TopicPartition("first", 0)));
             //解析打印 ConsumerRecords
             for (ConsumerRecord<String, String> record : result) {
                 String key = record.key();

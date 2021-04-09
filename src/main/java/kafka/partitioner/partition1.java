@@ -24,11 +24,9 @@ public class partition1 implements Partitioner {
 
     @Override
     public void close() {
-
     }
 
     @Override
     public void configure(Map<String, ?> map) {
-
     }
 }

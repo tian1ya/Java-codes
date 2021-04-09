@@ -1,0 +1,266 @@
+package dateStructure.dsPlay.dsa.algrithem;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
+/*
+    ASCII
+        码使用指定的7 位或8 位二进制数组合来表示128 或256 种可能的字符。
+        标准ASCII 码也叫基础ASCII码，使用7 位二进制数（剩下的1位二进制为0）来表示所有的大写和小写字母，数字0 到9、标点符号，
+        以及在美式英语中使用的特殊控制字符
+
+        0～31及127(共33个)是控制字符或通信专用字符（其余为可显示字符），如控制符
+        32～126(共95个)是字符(32是空格），
+            其中48～57为0到9十个阿拉伯数字。
+            65～90为26个大写英文字母，
+            97～122号为26个小写英文字母，
+            其余为一些标点符号、运算符号等。
+
+ */
+
+
+public class OthersAlgori {
+
+    public static void main(String[] args) {
+//        System.out.println(Arrays.toString(twoSum2(new int[]{3,2,4}, 6)));
+
+//        System.out.println(lengthOfLongestSubstringV2("pwwkew"));
+//        System.out.println(lengthOfLongestSubstringV2("abcabcbb"));
+//        System.out.println(lengthOfLongestSubstringV2("bbbbb"));
+
+//        System.out.println(longestPalindrome("babad"));
+//        System.out.println(longestPalindrome("cbbd"));
+//        System.out.println(longestPalindrome("ac"));
+//        System.out.println(longestPalindrome("bb"));
+//        System.out.println(longestPalindrome("bbbb"));
+//        System.out.println(longestPalindrome("abb"));
+
+//        System.out.println(longestPalindromeDP("babad"));
+//        System.out.println(longestPalindromeDP("cbbd"));
+//        System.out.println(longestPalindromeDP("ac"));
+//        System.out.println(longestPalindromeDP("bb"));
+//        System.out.println(longestPalindromeDP("bbbb"));
+//        System.out.println(longestPalindromeDP("abb"));
+//        System.out.println(longestPalindromeDP("aacabdkacaa"));
+
+        ListNode listNode1 = new ListNode(2, new ListNode(4, new ListNode(3)));
+        ListNode listNode2 = new ListNode(5, new ListNode(6, new ListNode(4)));
+
+        ListNode listNode = addTwoNumbers(listNode1, listNode2);
+        System.out.println("Aa");
+    }
+
+    static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() { }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+        int carry = 0;
+        while (l1 != null || l2 != null) {
+            int l1Val = l1 != null ? l1.val : 0;
+            int l2Val = l2 != null ? l2.val : 0;
+
+            int tempSum = l1Val + l2Val;
+            int tempSum1 = (tempSum + carry) % 10;
+            cur.next = new ListNode(tempSum1);
+            cur = cur.next;
+
+            carry = (tempSum+ carry) / 10;
+
+            l1 = l1 != null ? l1.next : null;
+            l2 = l2 != null ? l2.next : null;
+        }
+
+        if (carry == 1) {
+            cur.next = new ListNode(carry);
+            cur = cur.next;
+        }
+
+        return res.next;
+    }
+
+
+    public static String longestPalindromeDP(String s) {
+        /*
+            dp[i][k] 表示 s[i->k] 是回文串
+
+            状态转移方程：
+                dp[i][k] = dp[i+1][k-1] && s[i] == s[k]
+
+            初始/边界状态:
+                s[i][i] = true
+                s[i][i+1] = s[i]==s[j] ? true: false
+         */
+
+        int n = s.length();
+
+        boolean[][] dp = new boolean[n][n];
+
+        for (int i = 0; i < s.length(); i++) {
+            dp[i][i] = true;
+        }
+
+        String rest = "";
+        for (int j = 1; j < s.length(); j++) {
+            for (int i = 0; i < j; i++) {
+                if (s.charAt(j) != s.charAt(i))
+                    dp[i][j] = false;
+                else {
+                    if (j - i < 3)
+                        dp[i][j] = true;
+                    else
+                        // 这里 j 是外层循环，所以在循环到j的时候j-1已经得到了结果值
+                        dp[i][j] = dp[i + 1][j - 1];
+                }
+                if (dp[i][j] && rest.length() < s.substring(i, j + 1).length()) {
+                    rest = s.substring(i, j + 1);
+                }
+            }
+        }
+        return rest.isEmpty() ? s.substring(0, 1) : rest;
+    }
+
+    public static String longestPalindrome(String s) {
+        if (s.length() == 1) return s.substring(0, 1);
+        if (s.length() == 2) return s.substring(0, 1).equals(s.substring(1, 2)) ? s : s.substring(0, 1);
+
+        String res = "";
+
+        for (int i = 1; i < s.length() - 1; i++) {
+
+            String currentChar = String.valueOf(s.charAt(i));
+            String currentNextChar = String.valueOf(s.charAt(i + 1));
+            String currentPrevChar = String.valueOf(s.charAt(i - 1));
+
+            if (currentPrevChar.equals(currentNextChar)) {
+                // s[mid-1] == s[mid+1]
+                String res2 = longestPalindromeInner(s, i - 1, i + 1, currentChar);
+                res = res2.length() > res.length() ? res2 : res;
+            }
+            if (currentChar.equals(currentNextChar)) {
+                // s[mid] == s[mid + 1]
+                String res2 = longestPalindromeInner(s, i - 1, i + 2, currentChar + currentChar);
+                res = res2.length() > res.length() ? res2 : res;
+            }
+            if (currentChar.equals(currentPrevChar)) {
+                // s[mid] == s[mid-1]
+                String res2 = longestPalindromeInner(s, i - 2, i + 1, currentChar + currentChar);
+                res = res2.length() > res.length() ? res2 : res;
+            }
+        }
+        return res.isEmpty() ? s.substring(0, 1) : res;
+    }
+
+
+    public static String longestPalindromeInner(String s, int left, int right, String res) {
+        if (left < 0 || right >= s.length() || left > right) return res;
+
+        if (s.charAt(left) == s.charAt(right)) {
+            char c = s.charAt(left);
+            res = c + res + c;
+            return longestPalindromeInner(s, left - 1, right + 1, res);
+        }
+        return res;
+    }
+
+    private static String longestPalindromeInner(String s, int mid) {
+        char midChar = s.charAt(mid);
+
+        return null;
+    }
+
+    public static int lengthOfLongestSubstringV2(String s) {
+        if (s.isEmpty()) return 0;
+        int[] ints = new int[128];
+
+        Arrays.fill(ints, -1);
+
+        int left = 0, res = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (ints[s.charAt(i)] != -1) {
+                // 当前字符以前已经访问过了， 那么就更新 left
+                left = Math.max(left, ints[s.charAt(i)] + 1);
+            }
+            ints[s.charAt(i)] = i;
+            res = Math.max(res, i - left + 1);
+        }
+        return res;
+    }
+
+    public static int lengthOfLongestSubstring(String s) {
+        if (s.isEmpty()) return 0;
+        int res = Integer.MIN_VALUE;
+        HashSet<Character> set = new HashSet<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            // 从每个元素开始，往后找最大的
+            int i1 = lengthOfLongestSubstringInner(s, i, set);
+            if (i1 > res) {
+                res = i1;
+            }
+            set.clear();
+        }
+        return res;
+
+    }
+
+    private static int lengthOfLongestSubstringInner(String s, int index, HashSet<Character> set) {
+        set.add(s.charAt(index));
+        for (int i = index + 1; i < s.length(); i++) {
+            if (set.contains(s.charAt(i))) {
+                break;
+            }
+            set.add(s.charAt(i));
+        }
+        return set.size();
+    }
+
+
+    public static int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i; j < nums.length; j++) {
+                if (j > i && nums[i] + nums[j] == target) {
+                    return new int[]{i, j};
+                }
+            }
+        }
+        return null;
+    }
+
+    public static int[] twoSum2(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            int resValues = target - nums[i];
+            if (map.containsKey(resValues) && map.get(resValues) != i) {
+                return new int[]{i, map.get(resValues)};
+            }
+        }
+        return null;
+    }
+
+
+}

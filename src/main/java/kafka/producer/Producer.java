@@ -30,7 +30,7 @@ public class Producer {
         properties.put("buffer.memory", 33554432);
 
         // 序列号类
-        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        properties.put("key.serializer", "kafka.producer.Company");
         properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
 
