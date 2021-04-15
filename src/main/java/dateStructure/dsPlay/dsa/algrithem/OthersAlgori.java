@@ -49,7 +49,62 @@ public class OthersAlgori {
 //        System.out.println("Aa");
 
 //        System.out.println(convert("PAYPALISHIRING", 3));
-        System.out.println(convert("AB", 1));
+//        System.out.println(convert("AB", 1));
+        System.out.println(threeSumV1(new int[]{-1, 0, 1, 2, -1, -4}));
+//        System.out.println(threeSumV1(new int[]{0, 0, 0, 0}));
+    }
+
+    public static List<List<Integer>> threeSumV1(int[] nums) {
+        if (nums.length < 3) return Collections.emptyList();
+
+        Arrays.sort(nums);
+        // 小到大排序，对于index_i < index_j <index_k
+        // 和等于 num[index_i] 的元素肯定在 index_j 和 index_k 中取到
+        ArrayList<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > 0) continue;
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int indexL = i + 1;
+            int indexR = nums.length - 1;
+
+
+            while (indexL < indexR) {
+                int sum = nums[i] + nums[indexL] + nums[indexR];
+                if (sum == 0) {
+                    result.add(Arrays.asList(nums[i], nums[indexL], nums[indexR]));
+                    while (indexL < indexR && nums[indexL] == nums[indexL + 1])
+                        indexL += 1;
+                    while ((indexL < indexR && nums[indexR] == nums[indexR - 1]))
+                        indexR -= 1;
+                    indexR -= 1;
+                    indexL += 1;
+                } else if (sum > 0) {
+                    indexR -= 1;
+                } else {
+                    indexL += 1;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static List<List<Integer>> threeSum(int[] nums) {
+        // 会有重复问题，
+        if (nums.length < 3) return Collections.emptyList();
+
+        Arrays.sort(nums);
+
+        ArrayList<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                for (int k = j + 1; k < nums.length; k++) {
+                    if (nums[i] + nums[j] + nums[k] == 0) {
+                        result.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     public static String convert(String s, int numRows) {
@@ -70,7 +125,7 @@ public class OthersAlgori {
 
             list.get(index).append(chars[i]);
             index = flag ? index + 1 : index - 1;
-            if (index == numRows-1 || index == 0)
+            if (index == numRows - 1 || index == 0)
                 flag = !flag;
         }
 

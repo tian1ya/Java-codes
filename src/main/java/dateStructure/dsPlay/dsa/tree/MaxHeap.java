@@ -14,7 +14,7 @@ package dateStructure.dsPlay.dsa.tree;
 
     (还可以定义最小堆)
 
-    最大堆和最小堆是可以结合的，因为你大和小是有client 端给的
+    最大堆和最小堆是可以结合的，因为你大和小是有 client 端给的
 
     以下的2个结论有图示：
     当将数组的第一个位置空出来后：index 从1开始
@@ -31,11 +31,14 @@ package dateStructure.dsPlay.dsa.tree;
             left_node_index = parent_index * 2 + 1
             right_node_index = parent_index * 2 + 2
 
-        而且还能很容易知道每个节点的父亲是谁：(一下是正数除法)
+        而且还能很容易知道每个节点的父亲是谁：(以下是整数除法)
             parent_index = (left_node_index-1) / 2
             parent_index = (right_node_index-1) / 2
 
 
+    插入的时候，直接将值插入到数组的最后面，然后和父亲进行比较，是否交换位置(上浮操作)。
+    删除操作，也称为是删除最值元素，也就是删除顶部的元素，使用最后面的哪个元素去覆盖堆顶的元素，然后从
+    (parent, leftChild, rightChild) 三元祖中找到最小值，然后交换位置(下沉操作)
  */
 
 import dateStructure.dsPlay.dsa.Array;
