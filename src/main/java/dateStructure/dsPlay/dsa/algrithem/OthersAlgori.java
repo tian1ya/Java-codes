@@ -50,8 +50,45 @@ public class OthersAlgori {
 
 //        System.out.println(convert("PAYPALISHIRING", 3));
 //        System.out.println(convert("AB", 1));
-        System.out.println(threeSumV1(new int[]{-1, 0, 1, 2, -1, -4}));
+//        System.out.println(threeSumV1(new int[]{-1, 0, 1, 2, -1, -4}));
 //        System.out.println(threeSumV1(new int[]{0, 0, 0, 0}));
+
+        System.out.println(letterCombinations("23"));
+    }
+
+    public static List<String> letterCombinations(String digits) {
+        if (digits.isEmpty()) return Collections.emptyList();
+        HashMap<Character, String> hashMap = new HashMap<>();
+        hashMap.put('2', "abc");
+        hashMap.put('3', "def");
+        hashMap.put('4', "ghi");
+        hashMap.put('5', "jkl");
+        hashMap.put('6', "mno");
+        hashMap.put('7', "pqrs");
+        hashMap.put('8', "tuv");
+        hashMap.put('9', "wxyz");
+
+        ArrayList<String> result = new ArrayList<>();
+
+        // 画图理解下，sb 是如何收集combination的
+        StringBuffer sb = new StringBuffer();
+        backTrace(result, hashMap, digits,0, sb);
+        return result;
+    }
+
+    private static void backTrace(List<String> result, Map<Character, String> table, String digits, Integer depthIndex, StringBuffer currentComb) {
+        if (depthIndex == digits.length()) {
+            result.add(currentComb.toString());
+        } else {
+            char charAt = digits.charAt(depthIndex);
+            char[] chars = table.get(charAt).toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                char aChar = chars[i];
+                currentComb.append(aChar);
+                backTrace(result, table, digits, depthIndex+1, currentComb);
+                currentComb.deleteCharAt(depthIndex);
+            }
+        }
     }
 
     public static List<List<Integer>> threeSumV1(int[] nums) {
