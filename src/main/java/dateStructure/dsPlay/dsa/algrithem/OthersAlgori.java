@@ -1,6 +1,7 @@
 package dateStructure.dsPlay.dsa.algrithem;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /*
     ASCII
@@ -53,8 +54,17 @@ public class OthersAlgori {
 //        System.out.println(threeSumV1(new int[]{-1, 0, 1, 2, -1, -4}));
 //        System.out.println(threeSumV1(new int[]{0, 0, 0, 0}));
 
-        System.out.println(letterCombinations("23"));
+//        System.out.println(letterCombinations("23"));
+        System.out.println(isPalindrome(121));
     }
+
+    public static boolean isPalindrome(int x) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(x);
+        buffer.reverse();
+        return buffer.toString().equals(String.valueOf(x));
+    }
+
 
     public static List<String> letterCombinations(String digits) {
         if (digits.isEmpty()) return Collections.emptyList();
