@@ -55,7 +55,7 @@ public class OthersAlgori {
 //        System.out.println(threeSumV1(new int[]{0, 0, 0, 0}));
 
 //        System.out.println(letterCombinations("23"));
-        System.out.println(isPalindrome(121));
+        System.out.println(isPalindromeV2(121));
     }
 
     public static boolean isPalindrome(int x) {
@@ -63,6 +63,25 @@ public class OthersAlgori {
         buffer.append(x);
         buffer.reverse();
         return buffer.toString().equals(String.valueOf(x));
+    }
+
+    public static boolean isPalindromeV2(int x) {
+        String str = String.valueOf(x);
+        int leftIndex = 0;
+        int rightIndex = str.length() - 1;
+        boolean result = false;
+        while (!(leftIndex == rightIndex || leftIndex == rightIndex - 1)) {
+            if (!str.substring(leftIndex, leftIndex + 1).equals(str.substring(rightIndex, rightIndex + 1)))
+                break;
+            leftIndex++;
+            rightIndex--;
+        }
+
+        if (leftIndex == rightIndex)
+            result = true;
+        else if (leftIndex == rightIndex - 1)
+            result = str.substring(leftIndex, leftIndex + 1).equals(str.substring(rightIndex, rightIndex + 1));
+        return result;
     }
 
 
@@ -82,7 +101,7 @@ public class OthersAlgori {
 
         // 画图理解下，sb 是如何收集combination的
         StringBuffer sb = new StringBuffer();
-        backTrace(result, hashMap, digits,0, sb);
+        backTrace(result, hashMap, digits, 0, sb);
         return result;
     }
 
@@ -95,7 +114,7 @@ public class OthersAlgori {
             for (int i = 0; i < chars.length; i++) {
                 char aChar = chars[i];
                 currentComb.append(aChar);
-                backTrace(result, table, digits, depthIndex+1, currentComb);
+                backTrace(result, table, digits, depthIndex + 1, currentComb);
                 currentComb.deleteCharAt(depthIndex);
             }
         }
