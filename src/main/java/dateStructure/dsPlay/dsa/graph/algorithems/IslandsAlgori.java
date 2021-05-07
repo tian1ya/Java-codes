@@ -29,7 +29,7 @@ public class IslandsAlgori {
 //                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
 //                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
 //                {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}};
-//
+
 //        System.out.println(maxAreaOfIsland(a));
 //        int[][] grid = new int[][]{{0,1,0,0},{1,1,1,0},{0,1,0,0},{1,1,0,0}};
         int[][] grid = new int[][]{{1, 1}};
