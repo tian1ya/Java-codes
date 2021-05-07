@@ -102,8 +102,8 @@ public class DP {
 
     public static void main(String[] args) {
         // 70，
-//        System.out.println(leetCode70climbStairs(8));
-//        System.out.println(leetCode70climbStairsV2(8));
+        System.out.println(leetCode70climbStairs(8));
+        System.out.println(leetCode70climbStairsV2(8));
 
         // 120
 //        List<List<Integer>> list = new ArrayList<>();
