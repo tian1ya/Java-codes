@@ -5,29 +5,34 @@ import java.util.concurrent.*;
 public class ExecutorsTest {
     public static void main(String[] args) {
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+//        ExecutorService singleThreadExecutor1 = Executors.newCachedThreadPool();
+//        ExecutorService singleThreadExecutor2 = Executors.newFixedThreadPool(10);
         CallableDemo callableDemo = new CallableDemo();
 
         FutureTask<Integer> futureTask = new FutureTask<>(callableDemo);
 
-        singleThreadExecutor.submit(futureTask);
+        for (int i = 0; i < 100; i++) {
+            singleThreadExecutor.submit(futureTask);
+        }
+
 
         singleThreadExecutor.shutdown();
 
-        try {
-            Thread.sleep(2000);
-            System.out.println("主线程在做其他的事情");
-
-            // 这里会阻塞等待 future get 结果
-            if (futureTask.get() != null) {
-                System.out.println("feature.get(): ==> " + futureTask.get());
-            }else {
-                System.out.println("feature.get(): ==> " + null);
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("主线程事情做完了");
+//        try {
+//            Thread.sleep(2000);
+//            System.out.println("主线程在做其他的事情");
+//
+//            // 这里会阻塞等待 future get 结果
+//            if (futureTask.get() != null) {
+//                System.out.println("feature.get(): ==> " + futureTask.get());
+//            }else {
+//                System.out.println("feature.get(): ==> " + null);
+//            }
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.out.println("主线程事情做完了");
     }
 }
 

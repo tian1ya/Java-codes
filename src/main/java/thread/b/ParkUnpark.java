@@ -1,6 +1,6 @@
 package thread.b;
 
-        import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.LockSupport;
 
 public class ParkUnpark {
 
@@ -20,7 +20,8 @@ public class ParkUnpark {
 
             System.out.println("park...");
 
-            LockSupport.park(); // 对应的状态还是 WAIT 状态
+            LockSupport.park();
+            // 子线程在这里暂停了，知道这个线程启动之后才会继续往下执行，对应的状态还是 WAIT 状态
 
             System.out.println("subThread resume");
         });
@@ -36,6 +37,10 @@ public class ParkUnpark {
 
             wait notify/notifyall 必须配合 object monitor 一起使用，
             而 park unpark 不需要
+
+            park/unpark 则不需要，是以线程为单位来 [阻塞]和【唤醒】 线程，而notify 只能随机唤醒一个等待线程，notifyAll 是唤醒所有的等待线程，就不那么精确
+
+            park/unpark 可以先 unpark， 而 wait notify 不能先 notify
          */
     }
 }

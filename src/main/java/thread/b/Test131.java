@@ -13,7 +13,13 @@ public class Test131 {
                 if (!hasCig) {
                     try {
                         System.out.println("【小南】没有烟，先歇会");
-                        room.wait(); // 会释放锁
+                        room.wait();
+                        /*
+                         会释放锁
+                         The thread releases ownership of this monitor and waits
+                         until another thread notifies threads waiting on this object's monitor
+                         to wake up either through a call to the notify method or the notifyAll method
+                         */
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

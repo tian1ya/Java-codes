@@ -33,9 +33,9 @@ public class OthersAlgori {
 //        System.out.println(longestPalindrome("ac"));
 //        System.out.println(longestPalindrome("bb"));
 //        System.out.println(longestPalindrome("bbbb"));
-//        System.out.println(longestPalindrome("abb"));
+        System.out.println(longestPalindrome("bbbb"));
 
-//        System.out.println(longestPalindromeDP("babad"));
+//        System.out.println(longestPalindromeDP("bbbb"));
 //        System.out.println(longestPalindromeDP("cbbd"));
 //        System.out.println(longestPalindromeDP("ac"));
 //        System.out.println(longestPalindromeDP("bb"));
@@ -55,7 +55,7 @@ public class OthersAlgori {
 //        System.out.println(threeSumV1(new int[]{0, 0, 0, 0}));
 
 //        System.out.println(letterCombinations("23"));
-        System.out.println(isPalindromeV2(121));
+//        System.out.println(isPalindromeV2(121));
     }
 
     public static boolean isPalindrome(int x) {
