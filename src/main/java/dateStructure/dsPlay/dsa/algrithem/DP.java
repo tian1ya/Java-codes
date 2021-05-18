@@ -153,7 +153,7 @@ public class DP {
             3. 自底向上DP 解决
          */
 //        System.out.println(integerBreak(10));
-//        System.out.println(integerBreakDp(10));
+        System.out.println(integerBreakDp(10));
 //        System.out.println(integerBreakDp2(10));
 
         // 279
