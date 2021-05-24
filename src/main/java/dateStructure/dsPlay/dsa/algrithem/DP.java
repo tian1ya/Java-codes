@@ -102,8 +102,8 @@ public class DP {
 
     public static void main(String[] args) {
         // 70，
-        System.out.println(leetCode70climbStairs(8));
-        System.out.println(leetCode70climbStairsV2(8));
+//        System.out.println(leetCode70climbStairs(8));
+//        System.out.println(leetCode70climbStairsV2(8));
 
         // 120
 //        List<List<Integer>> list = new ArrayList<>();
@@ -153,7 +153,7 @@ public class DP {
             3. 自底向上DP 解决
          */
 //        System.out.println(integerBreak(10));
-        System.out.println(integerBreakDp(10));
+//        System.out.println(integerBreakDp(10));
 //        System.out.println(integerBreakDp2(10));
 
         // 279
@@ -166,7 +166,12 @@ public class DP {
         // 91、
 //        System.out.println(numDecodings("12"));
 
-        // 62I,
+        /*
+            62I,
+            一个机器人位于一个 m x n网格的左上角 （起始点在下图中标记为 “Start” ）。
+            机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+            问总共有多少条不同的路径？
+         */
 //        System.out.println(uniquePaths(3, 7));
 //        System.out.println(uniquePaths(3, 2));
 //        System.out.println(uniquePaths(3, 3));
@@ -181,16 +186,26 @@ public class DP {
         // 62III 这些题还没有完成
 
 
-        // 198 打家劫舍 问题
-//        int[] ints = {1, 2};
+        /*
+         198 打家劫舍 问题
+            你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，
+            如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+            给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，
+            一夜之内能够偷窃到的最高金额。
+         */
+//        int[] ints22 = {1, 2};
 //        int[] ints2 = {2, 7, 9, 3, 1};
-//        System.out.println(rob(ints));
-//        System.out.println(robOpt(ints));
+//        System.out.println(rob(ints2));
+//        System.out.println(robOpt(ints2));
 //
 //        System.out.println(rob(ints2));
 //        System.out.println(robOpt(ints2));
 
-        // 213 打家劫舍II
+        /*
+            213 打家劫舍II
+            你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，
+            这意味着第一个房屋和最后一个房屋是紧挨着的。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+         */
 //        int[] nums = new int[]{2, 3, 2}; // 3
 //        int[] nums = new int[]{1,2,3,1}; // 4
 //        int[] nums = new int[]{2,7,9,3,1}; // 11
@@ -199,21 +214,19 @@ public class DP {
 //        int[] nums = new int[]{0,0}; // 0
 //        System.out.println(robII(nums));
 
-        // 337 打家劫舍III
-        // 309
-
         // 0-1 背包问题(DP_note 中有一些笔记)
         // knapSack012
+        System.out.println(knapSack01(new int[]{2,3,4,5}, new int[]{3,4,5,6}, 8));
+        System.out.println(knapSack012(new int[]{2,3,4,5}, new int[]{3,4,5,6}, 8));
 
         /*
             416
-
             典型的背包问题，在n 个物品中选出一定的物品，填满 sum/2 的背包
                 1. F(n,c) 考虑将 n 个物品填满容量为C 的背包
                 2. F(i，c) = F(i-1, c) || F(i-1, c-w(i))
          */
 
-        int[] ints = {1, 5, 11, 5};
+//        int[] ints = {1, 5, 11, 5};
 //        System.out.println(canPartition(ints));
 
         // 322、377、474、137、
@@ -248,7 +261,7 @@ public class DP {
 //        int[] prices = {7,6,4,3,1};
 //        System.out.println(maxProfitV2(prices));
 
-        System.out.println(waysToStep(5));
+//        System.out.println(waysToStep(5));
     }
 
     public static int waysToStep(int n) {
@@ -519,6 +532,9 @@ public class DP {
     public static int knapSack012(int[] w, int[] v, int c) {
         int length = w.length;
         int[][] dp = new int[length][c + 1];
+        /*
+            dp[i][c] 在当前背包容量 C，前i个物品的最佳组合所得到的最大价值
+         */
 
         if (length == 0) return 0;
 
@@ -529,7 +545,14 @@ public class DP {
         for (int i = 1; i < length; i++) {
             for (int j = 0; j <= c; j++) {
                 dp[i][j] = dp[i - 1][j];
+                // 上一次获取的最大价值
                 if (j >= w[i]) {
+                    /*
+                        j 当前容量
+                        w[i] 当前物品重量
+                        这次回去的最大价值 = 这次物品价值 + 还可以放的下容量
+                        注意这里采用的方法是倒推的方式，当前重量小于可容纳的，那么放入当前的物品。然后再放空出来的空间给剩余物品
+                    */
                     dp[i][j] = Math.max(dp[i][j], v[i] + dp[i - 1][j - w[i]]);
                 }
             }
@@ -538,14 +561,25 @@ public class DP {
     }
 
     /*
-        F(i, c) = F(i-1, c) 或者
-                = F(i-1, c-w(i)) + v(i)
+        考虑第 [公式] 个物品，无外乎两种可能：选，或者不选。
+
+        F(i, c) = F(i-1, c) ：不选的话，背包的容量不变
+                = F(i-1, c-w(i)) + v(i) ：选的话，背包的容量变小，价值增加
                 => max(F(i-1, c), F(i-1, c-w(i)) + v(i))
      */
+    public static void printA(int[][] a) {
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                System.out.print(a[i][j] + ",");
+            }
+            System.out.println();
+        }
+    }
     public static int knapSack01(int[] w, int[] v, int c) {
         int length = w.length;
 
         int[][] dp = new int[length][c + 1];
+        // 第 i 个 物品放到第 c 个重量中
 
         return bestValue(w, v, length - 1, c, dp);
     }
@@ -578,10 +612,10 @@ public class DP {
             环状排列意味着第一个房子和最后一个房子中只能选择一个偷窃，
             因此可以把此环状排列房间问题约化为两个单排排列房间子问题：
 
-                在不偷窃第一个房子的情况下（即 nums[1:]nums[1:]），最大金额是 p1
-                在不偷窃最后一个房子的情况下（即 nums[:n-1]nums[:n−1]），最大金额是 p2
+                在不偷窃第一个房子的情况下（即 nums[1:]），最大金额是 p1
+                在不偷窃最后一个房子的情况下（即 nums[:n-1]），最大金额是 p2
 
-            综合偷窃最大金额： 为以上两种情况的较大值，即 max(p1,p2)max(p1,p2) 。
+            综合偷窃最大金额： 为以上两种情况的较大值，即 max(p1,p2)。
          */
         if (nums.length == 1) return nums[0];
         int rob = robbIIInner(Arrays.copyOfRange(nums, 0, nums.length - 1));
@@ -828,7 +862,7 @@ public class DP {
         int curr = Math.max(nums[0], nums[1]);
 
         for (int ij = 2; ij < nums.length; ij++) {
-            int temp = 0;
+            int temp;
             if (curr < prev + nums[ij]) {
                 temp = prev + nums[ij];
             } else {
