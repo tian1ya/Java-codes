@@ -216,8 +216,8 @@ public class DP {
 
         // 0-1 背包问题(DP_note 中有一些笔记)
         // knapSack012
-        System.out.println(knapSack01(new int[]{2,3,4,5}, new int[]{3,4,5,6}, 8));
-        System.out.println(knapSack012(new int[]{2,3,4,5}, new int[]{3,4,5,6}, 8));
+//        System.out.println(knapSack01(new int[]{2,3,4,5}, new int[]{3,4,5,6}, 8));
+//        System.out.println(knapSack012(new int[]{2,3,4,5}, new int[]{3,4,5,6}, 8));
 
         /*
             416
@@ -231,18 +231,24 @@ public class DP {
 
         // 322、377、474、137、
 
-        // 300 最长上升子序列
+        /*
+            300 最长上升子序列
+            找到其中最长严格递增子序列的长度。
+
+         */
 //        System.out.println(lengthOfLIS(new int[]{1,2,3}));
 
         // 376
-
         // 最长公共子序列
 
-        // 42
+        /*
+            42: 最大子序和
+                给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+         */
 //        int[] add = new int[]{-2,1,-3,4,-1,2,1,-5,4};
 //        int[] add = new int[]{-1, -2};
-//        int[] add = new int[]{-1};
-//        System.out.println(maxSubArray(add));
+        int[] add = new int[]{-1};
+        System.out.println(maxSubArray(add));
 //        System.out.println(maxSubArrayOpt(add));
 
         // 53
@@ -254,8 +260,8 @@ public class DP {
 
         // 764
 //        int[] cost = {10, 15, 20};
-//        int[] cost = {1, 100, 1, 1, 1, 100, 1, 1, 100, 1};
-//        System.out.println(minCostClimbingStairs(cost));
+        int[] cost = {1, 100, 1, 1, 1, 100, 1, 1, 100, 1};
+        System.out.println(minCostClimbingStairs(cost));
 
 //        int[] prices = {7, 1, 5, 3, 6, 4};
 //        int[] prices = {7,6,4,3,1};
@@ -437,7 +443,7 @@ public class DP {
 
     public static int lengthOfLIS(int[] nums) {
         // LIS[i] 以第i个数字为结尾的最长上升子序列的长度
-        // LIS[i] => LIS[i] = LIS[i]+1 if LIS[i] > LIS[j] (j = 0:i-1)
+        // LIS[i] => LIS[i] = LIS[i]+1 if LIS[i] > LIS[j] (j = [0:i-1]
         if (nums.length == 0) {
             return 0;
         }
@@ -545,13 +551,18 @@ public class DP {
         for (int i = 1; i < length; i++) {
             for (int j = 0; j <= c; j++) {
                 dp[i][j] = dp[i - 1][j];
-                // 上一次获取的最大价值
+                /*
+                    此次最大价值 = 上一次获取的最大价值 + 这次是否加当前物品价值
+                    下面经过一次判断是否添加，如果添加那么继续走添加的更新逻辑
+                 */
                 if (j >= w[i]) {
                     /*
                         j 当前容量
                         w[i] 当前物品重量
                         这次回去的最大价值 = 这次物品价值 + 还可以放的下容量
                         注意这里采用的方法是倒推的方式，当前重量小于可容纳的，那么放入当前的物品。然后再放空出来的空间给剩余物品
+
+                        dp[i - 1][j - w[i]] = dp[上次之前的物品][剩余的空间]
                     */
                     dp[i][j] = Math.max(dp[i][j], v[i] + dp[i - 1][j - w[i]]);
                 }
