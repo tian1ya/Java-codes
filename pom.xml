@@ -25,7 +25,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -103,6 +102,24 @@
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
             <version>2.2.2</version>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.elasticsearch.client</groupId>-->
+<!--            <artifactId>elasticsearch-rest-client</artifactId>-->
+<!--            <version>6.5.4</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>6.5.4</version>
         </dependency>
 
     </dependencies>
