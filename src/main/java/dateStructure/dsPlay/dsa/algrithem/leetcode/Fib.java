@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.leetcode;
+package dateStructure.dsPlay.dsa.algrithem.leetcode;
 
 public class Fib {
 

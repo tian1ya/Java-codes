@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.leetcode;
+package dateStructure.dsPlay.dsa.algrithem.leetcode;
 
 
 import java.util.ArrayList;
