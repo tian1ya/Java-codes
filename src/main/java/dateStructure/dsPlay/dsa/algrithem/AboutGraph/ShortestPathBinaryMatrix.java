@@ -1,17 +1,14 @@
-package dateStructure.dsPlay.dsa.graph.algorithems;
+package dateStructure.dsPlay.dsa.algrithem.AboutGraph;
 
 import java.util.LinkedList;
 
 /*
-    在一个 N × N 的方形网格中，每个单元格有两种状态：空（0）或者阻塞（1）。
+    给你一个 n x n 的二进制矩阵 grid 中，返回矩阵中最短 畅通路径 的长度。如果不存在这样的路径，返回 -1 。
+    二进制矩阵中的 畅通路径 是一条从 左上角 单元格（即，(0, 0)）到 右下角 单元格（即，(n - 1, n - 1)）的路径，该路径同时满足下述要求：
 
-    一条从左上角到右下角、长度为 k 的畅通路径，由满足下述条件的单元格 C_1, C_2, ..., C_k 组成：
-
-    相邻单元格 C_i 和 C_{i+1} 在八个方向之一上连通（此时，C_i 和 C_{i+1} 不同且共享边或角）
-        C_1 位于 (0, 0)（即，值为 grid[0][0]）
-        C_k 位于 (N-1, N-1)（即，值为 grid[N-1][N-1]）
-    如果 C_i 位于 (r, c)，则 grid[r][c] 为空（即，grid[r][c] == 0）
-
+        路径途经的所有单元格都的值都是 0 。
+        路径中所有相邻的单元格应当在 8 个方向之一 上连通（即，相邻两单元之间彼此不同且共享一条边或者一个角）。
+        畅通路径的长度 是该路径途经的单元格总数。
 
 note: 无权的最短路径 BFS
       8 联通，不单独建图，直接在举证中计算
@@ -68,7 +65,7 @@ public class ShortestPathBinaryMatrix {
     }
 
     private boolean inArea(int nextx, int nexty) {
-        return nextx >=0 && nextx < R && nexty >= 0 && nexty < C;
+        return nextx >= 0 && nextx < R && nexty >= 0 && nexty < C;
     }
 
     public static void main(String[] args) {

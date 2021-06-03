@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.dsa.graph.algorithems;
+package dateStructure.dsPlay.dsa.algrithem.AboutGraph;
 
 /*
     题目描述:

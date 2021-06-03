@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.dsa.graph.algorithems;
+package dateStructure.dsPlay.dsa.algrithem.AboutGraph;
 
 /*
     这类问题的总结
@@ -8,33 +8,34 @@ public class IslandsAlgori {
 
 
     public static void main(String[] args) {
-//         char[][] grid = new char[][]{
-//                {'1', '1', '0','0', '0'},
-//                {'0', '0', '0','0', '0'},
-//                {'1', '1', '0','0', '0'},
-//                {'0', '0', '0','1', '0'}
-//        };
+        char[][] grid = new char[][]{
+                {'1', '1', '0', '0', '0'},
+                {'0', '0', '0', '0', '0'},
+                {'1', '1', '0', '0', '0'},
+                {'0', '0', '0', '1', '0'}
+        };
 
-//        char[][] grid = new char[][]{
-//                {'1', '1'},
-//        };
+        char[][] grid2 = new char[][]{
+                {'1', '1'},
+        };
 
-//        System.out.println(numIslands(grid));
+        System.out.println(numIslands(grid));
 
-//        int[][] a = new int[][]{{0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-//                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
-//                {0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-//                {0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0},
-//                {0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0},
-//                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-//                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
-//                {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}};
+        int[][] a = new int[][]{{0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
+                {0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0},
+                {0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}};
 
-//        System.out.println(maxAreaOfIsland(a));
-//        int[][] grid = new int[][]{{0,1,0,0},{1,1,1,0},{0,1,0,0},{1,1,0,0}};
-        int[][] grid = new int[][]{{1, 1}};
+        System.out.println(maxAreaOfIsland(a));
+        int[][] grid22 = new int[][]{{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}};
+        int[][] grid3 = new int[][]{{1, 1}};
 
-        System.out.println(islandPerimeter(grid));
+        // 周长
+        System.out.println(islandPerimeter(grid3));
     }
 
     public static int islandPerimeter(int[][] grid) {
@@ -53,7 +54,7 @@ public class IslandsAlgori {
         if (!InArea(grid, row, col))
             return 1;
 
-        if (grid[row][col] == 0)
+        if (grid[row][col] == 0)// 遇到0，表示到达边界地方, 那么返回1，
             return 1;
 
         if (grid[row][col] != 1)

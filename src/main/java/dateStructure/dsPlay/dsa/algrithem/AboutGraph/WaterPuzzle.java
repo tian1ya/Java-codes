@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.dsa.graph.algorithems;
+package dateStructure.dsPlay.dsa.algrithem.AboutGraph;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import java.util.Queue;
 
     注意抽象出代码注释中的那几个状态
 
-    还有一个智能题：那就是农夫过河问题，也可以通过这样的抽象使用BFS 解决
+    还有一个智能题：那就是农夫过河问题，也可以通过这样的抽象使用 BFS 解决
  */
 public class WaterPuzzle {
 
