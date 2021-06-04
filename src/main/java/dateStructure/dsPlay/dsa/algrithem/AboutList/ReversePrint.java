@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.dsa.algrithem.LinkedList;
+package dateStructure.dsPlay.dsa.algrithem.AboutList;
 
 import java.util.ArrayList;
 

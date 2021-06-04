@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.dsa.algrithem.LinkedList;
+package dateStructure.dsPlay.dsa.algrithem.AboutList;
 
 public class ReverseList {
     static ListNode reverseList(ListNode head) {

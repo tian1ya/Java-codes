@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.dsa.algrithem.LinkedList;
+package dateStructure.dsPlay.dsa.algrithem.AboutList;
 
 public class MergeInBetween {
     static ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {

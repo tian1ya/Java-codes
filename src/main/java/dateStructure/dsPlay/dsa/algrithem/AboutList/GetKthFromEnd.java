@@ -1,4 +1,4 @@
-package dateStructure.dsPlay.dsa.algrithem.LinkedList;
+package dateStructure.dsPlay.dsa.algrithem.AboutList;
 
 public class GetKthFromEnd {
     static ListNode getKthFromEnd(ListNode head, int k) {
