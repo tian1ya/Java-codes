@@ -24,26 +24,43 @@ public class Customer {
      */
 
     public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
 
-        Enumeration rentals = _rentals.elements();
-        String result = "Rental Records for " + getName() + "\n";
-
-        while (rentals.hasMoreElements()) {
-            Rental each = (Rental) rentals.nextElement();
-
-            double thisAmount = each.getCharge();
-
-            frequentRenterPoints += each.getFrequentRenterPoints();
-
-            result += "\t" + each.getMovie().getTitle() + "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
-        }
-
-        result += "Amount owed is " + totalAmount + "\n";
-        result += "You earned " + frequentRenterPoints + "frequent renter points";
+        String result = getInitRentalResultMsg();
+        result += "Amount owed is " + getTotalCharge() + "\n";
+        result += "You earned " + getTotalFrequentRenterPoints() + "frequent renter points";
         return result;
     }
 
+    private String getInitRentalResultMsg() {
+        Enumeration rentals = _rentals.elements();
+        String result = "Rental Records for " + getName() + "\n";
+        while (rentals.hasMoreElements()) {
+            Rental each = (Rental) rentals.nextElement();
+            double thisAmount = each.getCharge();
+            result += "\t" + each.getMovie().getTitle() + "\t" + thisAmount + "\n";
+        }
+        return result;
+    }
+
+    public int getTotalFrequentRenterPoints() {
+        int frequentRenterPoints = 0;
+        Enumeration rentals = _rentals.elements();
+        while (rentals.hasMoreElements()) {
+            Rental each = (Rental) rentals.nextElement();
+            frequentRenterPoints += each.getFrequentRenterPoints();
+        }
+        return frequentRenterPoints;
+    }
+
+    public double getTotalCharge() {
+        double totalAmount = 0;
+        Enumeration rentals = _rentals.elements();
+        while (rentals.hasMoreElements()) {
+
+            Rental each = (Rental) rentals.nextElement();
+            double thisAmount = each.getCharge();
+            totalAmount += thisAmount;
+        }
+        return totalAmount;
+    }
 }
