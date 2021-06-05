@@ -35,9 +35,7 @@ public class Customer {
 
             double thisAmount = each.getCharge();
 
-            frequentRenterPoints++;
-            if (each.getMovie().getPrinceCode() == Movie.NEW_RELEASE && each.getDaysRented() > 1)
-                frequentRenterPoints++;
+            frequentRenterPoints += each.getFrequentRenterPoints();
 
             result += "\t" + each.getMovie().getTitle() + "\t" + thisAmount + "\n";
             totalAmount += thisAmount;
@@ -46,8 +44,6 @@ public class Customer {
         result += "Amount owed is " + totalAmount + "\n";
         result += "You earned " + frequentRenterPoints + "frequent renter points";
         return result;
-
-
     }
 
 }

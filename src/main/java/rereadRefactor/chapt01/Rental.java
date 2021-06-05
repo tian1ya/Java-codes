@@ -44,4 +44,8 @@ public class Rental {
         }
         return result;
     }
+
+    public int getFrequentRenterPoints() {
+        return getMovie().getPrinceCode() == Movie.NEW_RELEASE && getDaysRented() > 1 ? 2:1;
+    }
 }
