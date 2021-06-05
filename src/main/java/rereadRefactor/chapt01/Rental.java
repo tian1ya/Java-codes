@@ -13,7 +13,7 @@ public class Rental {
         return _movie;
     }
 
-    public void set_movie(Movie _movie) {
+    public void setMovie(Movie _movie) {
         this._movie = _movie;
     }
 
@@ -21,7 +21,27 @@ public class Rental {
         return _daysRented;
     }
 
-    public void set_daysRented(int _daysRented) {
+    public void setDaysRented(int _daysRented) {
         this._daysRented = _daysRented;
+    }
+
+    double getCharge() {
+        double result = 0;
+        switch (getMovie().getPrinceCode()) {
+            case Movie.REGULAR:
+                result +=2;
+                if (getDaysRented() > 2)
+                    result += (getDaysRented()-2) * 1.5;
+                break;
+            case Movie.NEW_RELEASE:
+                result += getDaysRented() * 3;
+                break;
+            case Movie.CHILDRENS:
+                result += 1.5;
+                if (getDaysRented() > 3)
+                    result += (getDaysRented()-3) * 1.5;
+                break;
+        }
+        return result;
     }
 }
