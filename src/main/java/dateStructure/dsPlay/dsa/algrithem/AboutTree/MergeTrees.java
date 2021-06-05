@@ -17,11 +17,11 @@ public class MergeTrees {
     }
 
     public static void mergeInner(TreeNode root, TreeNode rootOther) {
-        if (root != null && rootOther != null) {
-            root.val = root.val + rootOther.val;
-        } else (root == null) {
-
-        }
+//        if (root != null && rootOther != null) {
+//            root.val = root.val + rootOther.val;
+//        } else (root == null) {
+//
+//        }
     }
 
     public static void main(String[] args) {
