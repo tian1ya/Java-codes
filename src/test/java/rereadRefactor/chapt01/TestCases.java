@@ -14,11 +14,11 @@ public class TestCases {
         customer.addRental(rental);
 
         String statement = customer.statement();
+        System.out.println(statement);
         assertTrue(statement.contains("Rental Records for 小明"));
         assertTrue(statement.contains("西游记\t1.5"));
         assertTrue(statement.contains("西游记\t1.5"));
         assertTrue(statement.contains("Amount owed is 1.5"));
         assertTrue(statement.contains("You earned 1frequent renter points"));
-        System.out.println(statement);
     }
 }
