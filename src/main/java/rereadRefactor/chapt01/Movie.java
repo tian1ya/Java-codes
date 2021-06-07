@@ -30,4 +30,24 @@ public class Movie {
     public void setPrinceCode(Integer _princeCode) {
         this._princeCode = _princeCode;
     }
+
+    public double getCharge(int _daysRented) {
+        double result = 0;
+        switch (getPrinceCode()) {
+            case REGULAR:
+                result +=2;
+                if (_daysRented > 2)
+                    result += (_daysRented-2) * 1.5;
+                break;
+            case NEW_RELEASE:
+                result += _daysRented * 3;
+                break;
+            case CHILDRENS:
+                result += 1.5;
+                if (_daysRented > 3)
+                    result += (_daysRented-3) * 1.5;
+                break;
+        }
+        return result;
+    }
 }

@@ -1,7 +1,7 @@
 package rereadRefactor.chapt01;
 
 public class Rental {
-    private Movie _movie;
+    Movie _movie;
     private int _daysRented;
 
     public Rental(Movie _movie, int _daysRented) {
@@ -25,26 +25,9 @@ public class Rental {
         this._daysRented = _daysRented;
     }
 
-    double getCharge() {
-        double result = 0;
-        switch (getMovie().getPrinceCode()) {
-            case Movie.REGULAR:
-                result +=2;
-                if (getDaysRented() > 2)
-                    result += (getDaysRented()-2) * 1.5;
-                break;
-            case Movie.NEW_RELEASE:
-                result += getDaysRented() * 3;
-                break;
-            case Movie.CHILDRENS:
-                result += 1.5;
-                if (getDaysRented() > 3)
-                    result += (getDaysRented()-3) * 1.5;
-                break;
-        }
-        return result;
+    public double getCharge() {
+        return _movie.getCharge(_daysRented);
     }
-
     public int getFrequentRenterPoints() {
         return getMovie().getPrinceCode() == Movie.NEW_RELEASE && getDaysRented() > 1 ? 2:1;
     }

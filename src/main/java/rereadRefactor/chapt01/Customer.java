@@ -36,7 +36,7 @@ public class Customer {
         String result = "Rental Records for " + getName() + "\n";
         while (rentals.hasMoreElements()) {
             Rental each = (Rental) rentals.nextElement();
-            double thisAmount = each.getCharge();
+            double thisAmount = each._movie.getCharge(each.getDaysRented());
             result += "\t" + each.getMovie().getTitle() + "\t" + thisAmount + "\n";
         }
         return result;
@@ -58,7 +58,7 @@ public class Customer {
         while (rentals.hasMoreElements()) {
 
             Rental each = (Rental) rentals.nextElement();
-            double thisAmount = each.getCharge();
+            double thisAmount = each._movie.getCharge(each.getDaysRented());
             totalAmount += thisAmount;
         }
         return totalAmount;
