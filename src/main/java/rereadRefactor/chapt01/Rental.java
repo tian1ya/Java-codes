@@ -28,7 +28,8 @@ public class Rental {
     public double getCharge() {
         return _movie.getCharge(_daysRented);
     }
+
     public int getFrequentRenterPoints() {
-        return getMovie().getPrinceCode() == Movie.NEW_RELEASE && getDaysRented() > 1 ? 2:1;
+        return getMovie().getFrequentRenterPoints(getDaysRented());
     }
 }
