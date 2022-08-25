@@ -99,6 +99,32 @@ public class AddTwoNumbers {
         return dummyHead;
     }
 
+    public static ListNode addTwoNumbersV3(ListNode l1, ListNode l2) {
+        if (Objects.isNull(l1)) return l2;
+        if (Objects.isNull(l2)) return l1;
+
+        int flag = 0;
+        ListNode dummyHead = new ListNode();
+        ListNode head = dummyHead;
+        while (Objects.nonNull(l1) || Objects.nonNull(l2) || flag > 0) {
+
+            int l1Value = Objects.isNull(l1) ? 0 : l1.val;
+            int l2Value = Objects.isNull(l2) ? 0 : l2.val;
+
+            l1 = Objects.isNull(l1) ? null : l1.next;
+            l2 = Objects.isNull(l2) ? null : l2.next;
+
+            int currentValue = (l1Value + l2Value + flag) % 10;
+            flag = (l1Value + l2Value + flag) / 10;
+
+            head.next = new ListNode(currentValue);
+            head = head.next;
+        }
+
+        return dummyHead.next;
+    }
+
+
     public static ListNode addTwoNumbersV2(ListNode l1, ListNode l2) {
         if (Objects.isNull(l1)) return l2;
         if (Objects.isNull(l2)) return l1;
@@ -140,6 +166,57 @@ public class AddTwoNumbers {
         }
 
         return dummyHead.next;
+    }
+
+    public static ListNode addTwoNumbersV4(ListNode l1, ListNode l2) {
+
+        int flag = 0;
+        ListNode dummyHead = new ListNode();
+        ListNode head = dummyHead;
+        while (Objects.nonNull(l1) || Objects.nonNull(l2) || flag > 0) {
+
+            int l1Value = Objects.isNull(l1) ? 0 : l1.val;
+            int l2Value = Objects.isNull(l2) ? 0 : l2.val;
+
+            l1 = Objects.isNull(l1) ? null : l1.next;
+            l2 = Objects.isNull(l2) ? null : l2.next;
+
+            int currentValue = (l1Value + l2Value + flag) % 10;
+            flag = (l1Value + l2Value + flag) / 10;
+
+            head.next = new ListNode(currentValue);
+            head = head.next;
+        }
+
+        return dummyHead.next;
+    }
+
+    public static ListNode addTwoNumbersV5(ListNode l1, ListNode l2) {
+        ListNode dummyHead = new ListNode();
+        ListNode head = dummyHead;
+
+        addTwoNumbersInner(l1, l2, head, 0);
+        return dummyHead.next;
+    }
+
+    public static ListNode addTwoNumbersInner(ListNode l1, ListNode l2, ListNode dummyHead, int flag) {
+
+        if (Objects.isNull(l1) && Objects.isNull(l2) && flag <= 0) return dummyHead;
+
+
+        int l1Value = Objects.isNull(l1) ? 0 : l1.val;
+        int l2Value = Objects.isNull(l2) ? 0 : l2.val;
+
+        l1 = Objects.isNull(l1) ? null : l1.next;
+        l2 = Objects.isNull(l2) ? null : l2.next;
+
+        int currentValue = (l1Value + l2Value + flag) % 10;
+        flag = (l1Value + l2Value + flag) > 9 ? 1 : 0;
+
+        dummyHead.next = new ListNode(currentValue);
+        dummyHead = dummyHead.next;
+
+        return addTwoNumbersInner(l1, l2, dummyHead, flag);
     }
 
     public static void main(String[] args) {
@@ -200,7 +277,7 @@ public class AddTwoNumbers {
 //        System.out.println(reverseNodes(node12));
         System.out.println(node1);
         System.out.println(node5);
-        System.out.println(addTwoNumbersV2(node1, node5));
+        System.out.println(addTwoNumbersV5(node1, node5));
 
     }
 }
