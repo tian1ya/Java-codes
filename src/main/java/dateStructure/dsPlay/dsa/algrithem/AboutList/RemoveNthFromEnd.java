@@ -1,39 +1,64 @@
 package dateStructure.dsPlay.dsa.algrithem.AboutList;
 
+import java.util.Objects;
+
 public class RemoveNthFromEnd {
+//    public static ListNode removeNthFromEnd(ListNode head, int n) {
+//        if (head == null) return head;
+//        if (head.next == null && n == 1) return null;
+//
+//
+//        int nodesLength = 0;
+//        ListNode dummyHead = head;
+//        while (dummyHead != null) {
+//            nodesLength++;
+//            dummyHead = dummyHead.next;
+//        }
+//
+//        if (n == nodesLength)
+//            return head.next;
+//
+//        if (n == 0) {
+//            dummyHead = head;
+//            while (dummyHead.next.next != null) {
+//                dummyHead = dummyHead.next;
+//            }
+//            dummyHead.next = null;
+//            return head;
+//        }
+//
+//        dummyHead = head;
+//        int deletedIndex = nodesLength - n;
+//
+//        for (int i = 0; i < deletedIndex-1; i++) {
+//            dummyHead = dummyHead.next;
+//        }
+//        dummyHead.next = dummyHead.next.next;
+//
+//        return head;
+//    }
+
     public static ListNode removeNthFromEnd(ListNode head, int n) {
-        if (head == null) return head;
-        if (head.next == null && n == 1) return null;
+        if (n == 0) return head;
 
+        ListNode dummyHead = new ListNode();
+        ListNode dummyHeadCopy = dummyHead;
 
-        int nodesLength = 0;
-        ListNode dummyHead = head;
-        while (dummyHead != null) {
-            nodesLength++;
-            dummyHead = dummyHead.next;
+        ListNode headCopy = head;
+        int count = 0;
+        while (Objects.nonNull(head)) {
+            head = head.next;
+            count++;
         }
 
-        if (n == nodesLength)
-            return head.next;
-
-        if (n == 0) {
-            dummyHead = head;
-            while (dummyHead.next.next != null) {
-                dummyHead = dummyHead.next;
-            }
-            dummyHead.next = null;
-            return head;
+        int restCount = count - n;
+        for (int i = 0; i < restCount; i++) {
+            dummyHeadCopy.next = headCopy;
+            headCopy = headCopy.next;
+            dummyHeadCopy = dummyHeadCopy.next;
         }
-
-        dummyHead = head;
-        int deletedIndex = nodesLength - n;
-
-        for (int i = 0; i < deletedIndex-1; i++) {
-            dummyHead = dummyHead.next;
-        }
-        dummyHead.next = dummyHead.next.next;
-
-        return head;
+        dummyHeadCopy.next = headCopy.next;
+        return dummyHead.next;
     }
 
     public static void main(String[] args) {
