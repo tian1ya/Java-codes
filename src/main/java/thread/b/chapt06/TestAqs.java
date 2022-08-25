@@ -27,6 +27,7 @@ public class TestAqs {
                 if (compareAndSetState(0,1)) {
                     // 状态变为1，拿到了锁
                     // 然后设置当前线程为锁的拥有者
+                    // arg 在重入锁的时候使用
                     setExclusiveOwnerThread(Thread.currentThread());
                     return true;
                 }
@@ -64,7 +65,7 @@ public class TestAqs {
             sync.acquireInterruptibly(1);
         }
 
-        @Override // 一次尝试加锁
+        @Override // 一次尝试加锁，加锁不成功，返回，不会阻塞，尝试一次
         public boolean tryLock() {
             return sync.tryAcquire(1);
         }

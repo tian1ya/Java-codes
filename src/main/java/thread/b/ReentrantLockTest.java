@@ -10,6 +10,9 @@ public class ReentrantLockTest {
     private static ReentrantLock rooms = new ReentrantLock();
     static Condition waitCigaretteSet = rooms.newCondition();
     static Condition waitTakeoutSet = rooms.newCondition();
+    /*
+        每个条件变量都会内部维护一个队列，存放调用 await 存放下得线程
+     */
 
 
     private static boolean hasCig = false;
@@ -43,6 +46,10 @@ public class ReentrantLockTest {
                     System.out.println(name + " 没有烟，先歇会");
                     try {
                         waitCigaretteSet.await();
+                        /*
+                            挂起当前线程，到条件 waitCigaretteSet，线程阻塞释放 lock 锁
+                            其他线程在调  waitCigaretteSet.singal 得时候，线程从条件变量队列中弹出，重新竞争锁
+                         */
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

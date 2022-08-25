@@ -15,6 +15,11 @@ public class ReentrantLockShunXuRun {
     private List<Condition> conditions;
     private int uniqueStrNum;
 
+    /*
+        打印几个字符串，然后有几个条件变量
+        当到达此次打印字符串，然后拿出该字符串得条件变量进行 single
+        如果不是当前打印，那么将当前条件变量 await
+     */
     public ReentrantLockShunXuRun(int runFlag, int loopNumber, int uniqueStrNum) {
         this.lock = new ReentrantLock();
         this.loopNumber = loopNumber;
@@ -47,7 +52,6 @@ public class ReentrantLockShunXuRun {
             } finally {
                 lock.unlock();
             }
-
         }
     }
 
