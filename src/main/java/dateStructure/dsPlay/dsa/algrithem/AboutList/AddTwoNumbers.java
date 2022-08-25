@@ -1,6 +1,7 @@
 package dateStructure.dsPlay.dsa.algrithem.AboutList;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class AddTwoNumbers {
     public static ListNode reverseNodes(ListNode head) {
@@ -98,31 +99,108 @@ public class AddTwoNumbers {
         return dummyHead;
     }
 
+    public static ListNode addTwoNumbersV2(ListNode l1, ListNode l2) {
+        if (Objects.isNull(l1)) return l2;
+        if (Objects.isNull(l2)) return l1;
+
+        int flag = 0;
+        ListNode dummyHead = new ListNode();
+        ListNode head = dummyHead;
+        while (Objects.nonNull(l1) && Objects.nonNull(l2)) {
+            int l1Value = l1.val;
+            int l2Value = l2.val;
+
+            l1 = l1.next;
+            l2 = l2.next;
+
+            int currentValue = (l1Value + l2Value + flag) % 10;
+
+            head.next = new ListNode(currentValue);
+
+            head = head.next;
+
+            flag = (l1Value + l2Value + flag) / 10;
+        }
+
+        ListNode remainList = Objects.isNull(l1) ? l2 : l1;
+
+        while (Objects.nonNull(remainList)) {
+            int val = remainList.val;
+            int currentValue = (flag + val) % 10;
+            head.next = new ListNode(currentValue);
+
+            head = head.next;
+
+            flag = (flag + val) / 10;
+            remainList = remainList.next;
+        }
+
+        if (flag > 0) {
+            head.next = new ListNode(flag);
+        }
+
+        return dummyHead.next;
+    }
+
     public static void main(String[] args) {
+//        ListNode node1 = new ListNode(9);
+//        ListNode node11 = new ListNode(4);
+//        ListNode node2 = new ListNode(4);
+//        ListNode node22 = new ListNode(3);
+//        node1.next = node11;
+//        node11.next = node2;
+//        node2.next = node22;
+//
+//        ListNode node12 = new ListNode(5);
+//        ListNode node122 = new ListNode(6);
+//        ListNode node222 = new ListNode(4);
+//
+//        node12.next = node122;
+//        node122.next = node222;
+
+//        System.out.println(node1);
+//        System.out.println(node12);
+//        System.out.println(addTwoNumbersV2(node1, node12));
+
+//        ListNode listNode = new ListNode(1);
+//        ListNode listNode2 = new ListNode(9);
+//        ListNode listNode22 = new ListNode(9);
+//        listNode2.next = listNode22;
+//        System.out.println(addTwoNumbersNoReverse(listNode, listNode2));
+
+        //-------------------
+
         ListNode node1 = new ListNode(9);
-        ListNode node11 = new ListNode(4);
-        ListNode node2 = new ListNode(4);
-        ListNode node22 = new ListNode(3);
+        ListNode node11 = new ListNode(9);
+        ListNode node2 = new ListNode(9);
+        ListNode node22 = new ListNode(9);
+
+        ListNode node3 = new ListNode(9);
+        ListNode node33 = new ListNode(9);
+        ListNode node44 = new ListNode(9);
+
         node1.next = node11;
         node11.next = node2;
         node2.next = node22;
 
-        ListNode node12 = new ListNode(5);
-        ListNode node122 = new ListNode(6);
-        ListNode node222 = new ListNode(4);
+        node22.next = node3;
+        node3.next = node33;
+        node33.next = node44;
 
-        node12.next = node122;
-        node122.next = node222;
+        ListNode node5 = new ListNode(9);
+        ListNode node55 = new ListNode(9);
+        ListNode node6 = new ListNode(9);
+        ListNode node66 = new ListNode(9);
+
+        node5.next = node55;
+        node55.next = node6;
+        node6.next = node66;
 
 //        System.out.println(reverseNodes(node1));
 //        System.out.println(reverseNodes(node12));
-//        System.out.println(addTwoNumbers(node1, node12));
-
-        ListNode listNode = new ListNode(1);
-        ListNode listNode2 = new ListNode(9);
-        ListNode listNode22 = new ListNode(9);
-        listNode2.next = listNode22;
-        System.out.println(addTwoNumbersNoReverse(listNode, listNode2));
+        System.out.println(node1);
+        System.out.println(node5);
+        System.out.println(addTwoNumbersV2(node1, node5));
 
     }
 }
