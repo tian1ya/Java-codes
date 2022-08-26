@@ -66,6 +66,38 @@ public class MergeKLists {
         return head.next;
     }
 
+    public static void mergeKListsV3Inner(ListNode dummyHead, ListNode[] lists) {
+        if (Arrays.stream(lists).allMatch(Objects::isNull)) return;
+
+        int smallIndex = 0;
+        int smallValue = Integer.MAX_VALUE;
+        for (int index = 0; index < lists.length; index++) {
+            ListNode node = lists[index];
+            if (Objects.nonNull(node) && node.val < smallValue) {
+                smallValue = node.val;
+                smallIndex = index;
+            }
+        }
+
+        lists[smallIndex] = lists[smallIndex].next;
+
+        dummyHead.next = new ListNode(smallValue);
+        dummyHead = dummyHead.next;
+
+        mergeKListsV3Inner(dummyHead, lists);
+    }
+
+    public static ListNode mergeKListsV3(ListNode[] lists) {
+
+        if (lists.length <= 0) return null;
+
+        ListNode dummyHead = new ListNode(),head = dummyHead;
+
+        mergeKListsV3Inner(dummyHead, lists);
+
+        return head.next;
+    }
+
     public static void main(String[] args) {
         ListNode node1 = new ListNode(1);
         ListNode node2 = new ListNode(4);
@@ -87,6 +119,6 @@ public class MergeKLists {
         System.out.println(node11);
         System.out.println(node45);
 
-        System.out.println(mergeKListsV2(new ListNode[]{node1, node11, node45}));
+        System.out.println(mergeKListsV3(new ListNode[]{node1, node11, node45}));
     }
 }
