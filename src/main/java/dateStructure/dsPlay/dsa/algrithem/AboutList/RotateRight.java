@@ -34,6 +34,30 @@ public class RotateRight {
         return start;
     }
 
+    public static ListNode rotateRightV2(ListNode head, int k) {
+        if (k <= 0 || Objects.isNull(head)) return head;
+        int nodeCount = 0;
+        ListNode tempHead = head;
+        while (Objects.nonNull(tempHead)) {
+            tempHead = tempHead.next;
+            nodeCount++;
+        }
+
+        k = nodeCount - k % nodeCount;
+        if (k == nodeCount) return head;
+
+        ListNode end = head, start;
+
+        for (int i = 1; i < nodeCount-k; i++) {
+            end = end.next;
+        }
+
+        start = end.next;
+        end.next = null;
+
+        return start;
+    }
+
     public static void main(String[] args) {
         ListNode node1 = new ListNode(1);
         ListNode node11 = new ListNode(2);
@@ -47,6 +71,7 @@ public class RotateRight {
         node22.next = node3;
 
         System.out.println(node1);
-        System.out.println(rotateRight(node1, 5));
+//        System.out.println(rotateRight(node1, 5));
+        System.out.println(rotateRightV2(node1, 2));
     }
 }
