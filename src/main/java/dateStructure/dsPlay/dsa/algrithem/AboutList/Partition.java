@@ -31,6 +31,33 @@ public class Partition {
         return result.next;
     }
 
+    public static ListNode partitionV2(ListNode head, int x) {
+        if (Objects.isNull(head) || Objects.isNull(head.next)) return head;
+        ListNode dummyHead = head;
+        ListNode smallList = new ListNode();
+        ListNode smallHead = smallList;
+
+        ListNode bigList = new ListNode();
+        ListNode bigHead = bigList;
+
+        while (Objects.nonNull(dummyHead)) {
+
+            if (dummyHead.val < x) {
+                smallList.next = dummyHead;
+                smallList = smallList.next;
+            } else {
+                bigList.next = dummyHead;
+                bigList = bigList.next;
+            }
+            dummyHead = dummyHead.next;
+        }
+
+        bigList.next = null;
+        smallList.next = bigHead.next;
+
+        return smallHead.next;
+    }
+
 
     public static void main(String[] args) {
         ListNode node1 = new ListNode(1);
@@ -48,6 +75,6 @@ public class Partition {
 //        node4.next = node5;
 
         System.out.println(node1);
-        System.out.println(partition(node1, 3));
+        System.out.println(partitionV2(node1, 3));
     }
 }
