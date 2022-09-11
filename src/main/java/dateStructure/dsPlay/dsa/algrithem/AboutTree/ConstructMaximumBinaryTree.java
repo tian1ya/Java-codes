@@ -9,6 +9,8 @@ public class ConstructMaximumBinaryTree {
 
     private static TreeNode build(int[] nums, int startIndex, int endIndex) {
 
+        if (startIndex > endIndex) return null;
+
         int maxIndex = startIndex;
         int temMaxVal = nums[maxIndex];
         for (int i = startIndex; i <= endIndex; i++) {
@@ -19,8 +21,8 @@ public class ConstructMaximumBinaryTree {
         }
 
         TreeNode treeNode = new TreeNode(temMaxVal);
-        treeNode.left = maxIndex == startIndex ? null : build(nums, startIndex, maxIndex - 1);
-        treeNode.right = maxIndex == endIndex ? null : build(nums, maxIndex + 1, endIndex);
+        treeNode.left = build(nums, startIndex, maxIndex - 1);
+        treeNode.right = build(nums, maxIndex + 1, endIndex);
         return treeNode;
     }
 
