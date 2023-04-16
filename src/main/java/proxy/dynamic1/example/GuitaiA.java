@@ -7,6 +7,10 @@ public class GuitaiA implements InvocationHandler {
 
     private Object pingpai;
 
+    /**
+     *
+     * @param pingpai 被代理对象，被代理对象需要实现的接口，和Proxy.newInstance 中给的接口需是一样的
+     */
     public GuitaiA(Object pingpai) {
         this.pingpai = pingpai;
     }

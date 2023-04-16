@@ -33,6 +33,7 @@ public class Client {
             3. 执行enhancer.create()动态生成一个代理类
          */
         HelloService o = (HelloService)enhancer.create();
+//        Enhancer.registerStaticCallbacks(subclass, CALLBACKS);
 
 /*
          代理对象掉调用目标方法

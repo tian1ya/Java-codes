@@ -3,17 +3,32 @@ package fp.chapt11
 /*
    确保返回值和参数保持一样的性质，所以定义一个Map 的接口，其定义不出太多的操作其作用并不是那么的显著，
 
+   Functor：
+    将 map 函数提升到一个上下文中，例如 Option 中有 map 方法，将 map 变化现在在 Option 上下文中
+    在经过Functor 操作后，其上下文是不变的(数据结构是不变的)，输入是List，输出肯定还是 List，只不过里面的值
+    经过 map 函数后发生了变化
+
    Monad
     关系单独的数据类型中寻找并定义最小的一个原始的操作集合，在这个之上通过组合定义更多可用的操作
-    如我们定义了 unit 和 flatMap 为最小操作单元
+    如我们定义了 unit 和 flatMap 为最小操作单元，然后可以通过二者的组合，构造出很多的操作，如 map
 
      Monad 抽取出了重复的代码，不是对一个类型的泛化，而是大量的不同的数据类型满足Monad 接口和法则的抽象
      允许一劳永逸的堆很多看起来没有共性的类型编写多个组合子.
+
+     monad 首先就是一个 Functor，其继承了 Functor;associativity（结合律） and identity(单位)
+       associative law for monoids: op(op(x,y), z) == op(x, op(y,z))
+       associative law for monads in a much more symmetric way:
+       compose(compose(f, g), h) == compose(f, compose(g, h)
+
+       A monad is an implementation of one of the minimal sets of monadic
+      combinators, satisfying the laws of associativity and identity
+
 
  */
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 
+  // or called unzip
   def distributor[A, B](fab: F[(A, B)]): (F[A], F[B]) = (map(fab)(_._1), map(fab)(_._2))
 
   def codistributor[A, B](e: Either[F[A], F[B]]): F[Either[A, B]] = e match {
@@ -64,7 +79,7 @@ object MonadHelper extends App {
   println(ints.mkString(","))
 
   /*
-     到这里总算是能明白一些 Monad 对函数的定义API 的抽象总结能力了，所有的api 均是基于 unit 和 map 2个基本操作
+     到这里总算是能明白一些 Monad 对函数的定义API 的抽象总结能力了，所有的api 均是基于 unit 和 flatMap 2个基本操作
      所以在 optionalMonad streamMonad 等均override 这2个函数
      而其他的基于这2个函数的api 均是在 Monad 的 trait 中实现， 这样在 optionalMonad streamMonad 就同时具有了这些API
      的能力。
@@ -95,23 +110,23 @@ object MonadHelper extends App {
 
   private val list2: List[String] = listMonad.map2[Int, String, String](List[Int](1,2,3,4), List[String]("1","2","3"))((e1, e2) => e1.toString + "->" + e2)
   println(list2.mkString(","))
-
+//
   private val option: Option[List[Int]] = optionalMonad.sequence(List(Some(1), Some(2), Some(3)))
   println(option.mkString(","))
-
-  private val option1: Option[List[Int]] = optionalMonad.replicateM(2, Some(2))
-  println(option1.mkString(","))
-
-  private val functionaa: Int => List[Int] = listMonad.compose[Int, Int, Int](a => List(a + 1), a => List(a*3))
-  println(functionaa(2).mkString(","))
-
-  private val list3: List[Int] = listMonad.join(List(List(1,2,3), List(4,5,6)))
-  println(list3.mkString(","))
-
-  private val value: Id[String] = Id("Hello, ") flatMap(a => Id("Monad!").flatMap(b => (Id(a + b))))
-  println(value.value)
-
-  private val value1: Id[String] = for {a <- Id("Hello, "); b <- Id("Monad!")} yield a + b
-  println(value1.value)
+//
+//  private val option1: Option[List[Int]] = optionalMonad.replicateM(2, Some(2))
+//  println(option1.mkString(","))
+//
+//  private val functionaa: Int => List[Int] = listMonad.compose[Int, Int, Int](a => List(a + 1), a => List(a*3))
+//  println(functionaa(2).mkString(","))
+//
+//  private val list3: List[Int] = listMonad.join(List(List(1,2,3), List(4,5,6)))
+//  println(list3.mkString(","))
+//
+//  private val value: Id[String] = Id("Hello, ") flatMap(a => Id("Monad!").flatMap(b => (Id(a + b))))
+//  println(value.value)
+//
+//  private val value1: Id[String] = for {a <- Id("Hello, "); b <- Id("Monad!")} yield a + b
+//  println(value1.value)
 
 }
