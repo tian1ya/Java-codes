@@ -22,7 +22,7 @@ public class Graph {
     }
 
     public Graph(String fileName) {
-        String path = "/Users/xuxliu/Ifoods/Java/leetcode/src/thread.book.main/java/dateStructure/graph/files/" + fileName;
+        String path = "E:\\back-end\\Java-codes\\src\\main\\java\\dateStructure\\dsPlay\\dsa\\graph\\files\\" + fileName;
         File file = new File(path);
 
         try (Scanner scanner = new Scanner(file)) {

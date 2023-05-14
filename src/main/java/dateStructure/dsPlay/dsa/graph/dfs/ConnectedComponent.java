@@ -5,7 +5,7 @@ import dateStructure.dsPlay.dsa.graph.common.Graph;
 import java.util.ArrayList;
 
 /*
-
+    联通分量检测
  */
 public class ConnectedComponent {
 
@@ -21,6 +21,7 @@ public class ConnectedComponent {
         }
         for (int i = 0; i < G.V(); i++) {
             if (visited[i] == -1) {
+                // 如果只有一个联通分量，那么经过一个点，那么就可以将所有的点访问到
                 dfs(i, cccount);
                  cccount++;
             }

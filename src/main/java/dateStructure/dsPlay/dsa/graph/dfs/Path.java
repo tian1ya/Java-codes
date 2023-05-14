@@ -8,17 +8,21 @@ import java.util.Collections;
 /*
     求两个顶点之间的路径：两点在一个联通分量中，那么两点间有路径
  */
-public class SingleSourcePath {
+public class Path {
 
     private boolean[] visited;
     private Graph G;
     private int s;
+    private int t;
     private int[] prev;
 
-    public SingleSourcePath(Graph graph, int s) {
-        this.G = graph;
+    public Path(Graph graph, int s, int t) {
         graph.validateVertex(s);
+        graph.validateVertex(t);
+
+        this.G = graph;
         this.s = s;
+        this.t = t;
 
         visited = new boolean[G.V()];
         prev = new int[graph.V()];
@@ -26,28 +30,26 @@ public class SingleSourcePath {
         dfs(this.s, this.s);
     }
 
-    private void dfs(int v, int parent) {
+    private boolean dfs(int v, int parent) {
         visited[v] = true;
         prev[v] = parent; // 上一个顶点
+
+        if (v == t) return true; // 到达 目标点 t
         Iterable<Integer> adjs = G.adj(v);
         for (Integer next : adjs) {
             if (!visited[next])
-                dfs(next, v);
+                if (dfs(next, v)) return true;
         }
+        return false;
     }
 
-    private boolean isConnectedTo(int t) {
-        G.validateVertex(t);
-        /*
-            有被访问过，说明是在联通的链里面
-            这里仅仅是判断是否和 s 属于一个联通
-         */
+    private boolean isConnectedTo() {
         return visited[t];
     }
 
-    private Iterable<Integer> path(int t) {
+    private Iterable<Integer> path() {
         ArrayList<Integer> res = new ArrayList<>();
-        if (!isConnectedTo(t)) {
+        if (!isConnectedTo()) {
             /*
                 s 到 t 没有联通
              */
@@ -66,8 +68,9 @@ public class SingleSourcePath {
     public static void main(String[] args) {
         Graph graph = new Graph("g3.txt");
 
-        SingleSourcePath graphDFS = new SingleSourcePath(graph, 0);
-        System.out.println("0 -> 6" + graphDFS.path(6));
-        System.out.println("0 -> 5" + graphDFS.path(5));
+        Path graphDFS = new Path(graph, 0, 6);
+        Path graphDFS2 = new Path(graph, 0, 5);
+        System.out.println("0 -> 6" + graphDFS.path());
+        System.out.println("0 -> 5" + graphDFS2.path());
     }
 }
