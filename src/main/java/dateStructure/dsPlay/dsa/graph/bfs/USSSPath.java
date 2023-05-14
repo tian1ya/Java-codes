@@ -67,6 +67,7 @@ public class USSSPath {
     public Iterable<Integer> path(int t) {
         ArrayList<Integer> res = new ArrayList<>();
         if (!isConnetedTo(t)) return res;
+        // 反向求解路径
         int cur = t;
         while (cur != s) {
             res.add(cur);
