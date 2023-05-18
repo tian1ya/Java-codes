@@ -3,7 +3,7 @@ package dateStructure.dsPlay.dsa.algrithem.AboutGraph;
 import java.util.LinkedList;
 
 /*
-    给你一个 n x n 的二进制矩阵 grid 中，返回矩阵中最短 畅通路径 的长度。如果不存在这样的路径，返回 -1 。
+    1091 给你一个 n x n 的二进制矩阵 grid 中，返回矩阵中最短 畅通路径 的长度。如果不存在这样的路径，返回 -1 。
     二进制矩阵中的 畅通路径 是一条从 左上角 单元格（即，(0, 0)）到 右下角 单元格（即，(n - 1, n - 1)）的路径，该路径同时满足下述要求：
 
         路径途经的所有单元格都的值都是 0 。
@@ -11,7 +11,7 @@ import java.util.LinkedList;
         畅通路径的长度 是该路径途经的单元格总数。
 
 note: 无权的最短路径 BFS
-      8 联通，不单独建图，直接在举证中计算
+      8 联通，不单独建图，直接在矩阵中计算
  */
 public class ShortestPathBinaryMatrix {
 
@@ -55,7 +55,7 @@ public class ShortestPathBinaryMatrix {
                     visited[nextx][nexty] = true;
                     dis[nextx][nexty] = dis[curx][cury] + 1;
 
-                    if (nextx == R - 1 && nexty == C - 1) {
+                    if (nextx == R - 1 && nexty == C - 1) { // 到达右下角
                         return dis[nextx][nexty];
                     }
                 }

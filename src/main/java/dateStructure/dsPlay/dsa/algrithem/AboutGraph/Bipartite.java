@@ -2,7 +2,7 @@ package dateStructure.dsPlay.dsa.algrithem.AboutGraph;
 
 /*
     题目描述:
-       给定一个无向图graph，当这个图为二分图时返回true。
+       785：给定一个无向图graph，当这个图为二分图时返回true。
 
         如果我们能将一个图的节点集合分割成两个独立的子集A和B，并使图中的每一条边的两个节点一个来自A集合，
         一个来自B集合，我们就将这个图称为二分图。
